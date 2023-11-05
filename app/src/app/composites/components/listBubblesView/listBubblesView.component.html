@@ -1,0 +1,15 @@
+<div class="outerbox">
+  <div class="header">Bubbles</div>
+  <div class="bubbles">
+    <listBubbles
+      [bubbles]="bubbles"
+      (selectBubble)="onSelectBubble($event)">
+    ></listBubbles>
+  </div>
+</div>
+<div class="outerbox">
+  <div class="header">New Bubble</div>
+  <div class="addbubble">
+    <addBubble></addBubble>
+  </div>
+</div>

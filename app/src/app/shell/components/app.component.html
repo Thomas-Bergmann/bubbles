@@ -1,0 +1,10 @@
+<h1>HATOKA bubbles</h1>
+<div class="navigation">
+  <nav>
+    <a routerLink="/bubbles" routerLinkActive="active">Bubbles</a>
+  </nav>
+</div>
+<div [@routeAnimation]="getAnimationData(routerOutlet)">
+  <router-outlet #routerOutlet="outlet"></router-outlet>
+</div>
+<router-outlet name="popup"></router-outlet>
