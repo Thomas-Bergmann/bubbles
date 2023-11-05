@@ -10,6 +10,6 @@ public interface BubbleBOFactory
     
     default BubbleBO get(BubblePO po)
     {
-        return get(BubbleRef.localRef(po.getAbbreviation()));
+        return get(BubbleRef.localRef(po.getExternalID()));
     }
 }

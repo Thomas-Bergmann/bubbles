@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 
 import * as bubbles from './bubbles';
+import * as humans from './humans';
 import * as oidc from './oidc';
 import * as core from './core/service/store';
 import { CompositeRoutingModule } from './composites/routing';
@@ -29,6 +30,7 @@ import { CompositeRoutingModule } from './composites/routing';
       serviceState : core.serviceReducer,
     }),
     bubbles.BubbleModule,
+    humans.HumanModule,
     oidc.OIDCModule,
     core.ServiceModule,
     CompositeRoutingModule,

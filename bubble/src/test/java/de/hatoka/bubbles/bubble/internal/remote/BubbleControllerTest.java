@@ -1,16 +1,9 @@
-/*
- * Copyright (C) Intershop Communications AG - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- * The content is proprietary and confidential.
- * Intershop Communication AG, Intershop Tower, 07740 Jena, Germany, 2018-04-05
- */
 package de.hatoka.bubbles.bubble.internal.remote;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -64,13 +57,13 @@ public class BubbleControllerTest
     public void createBubbleAndDelete()
     {
         BubbleCreateRO data = new BubbleCreateRO();
-        data.setName(BUBBLE_REF1.getAbbreviation());
+        data.setName(BUBBLE_REF1.getExternalID());
         data.setUserRef(USER_REF_ONE.getLocalRef());
         putBubble(BUBBLE_REF1, data);
 
         BubbleRO ro = getBubble(BUBBLE_REF1);
         assertNotNull(ro, "bubble created and found");
-        assertNotNull(ro.getInfo(), "bubble contains info");
+        assertNotNull(ro.getData(), "bubble contains data");
         assertEquals("name-1", ro.getData().getName());
         deleteBubble(BUBBLE_REF1);
     }
@@ -80,9 +73,9 @@ public class BubbleControllerTest
     {
         BubbleCreateRO data = new BubbleCreateRO();
         data.setUserRef(USER_REF_ONE.getLocalRef());
-        data.setName(BUBBLE_REF1.getAbbreviation());
+        data.setName(BUBBLE_REF1.getExternalID());
         putBubble(BUBBLE_REF1, data);
-        data.setName(BUBBLE_REF2.getAbbreviation());
+        data.setName(BUBBLE_REF2.getExternalID());
         putBubble(BUBBLE_REF2, data);
 
         List<BubbleRO> bubbles = getBubbles(USER_REF_ONE);
@@ -100,7 +93,7 @@ public class BubbleControllerTest
     private Map<String, String> createURIParameter(BubbleRef ref)
     {
         Map<String, String> urlParams = new HashMap<>();
-        urlParams.put(BubbleController.PATH_VAR_BUBBLEID, ref.getAbbreviation());
+        urlParams.put(BubbleController.PATH_VAR_BUBBLEID, ref.getExternalID());
         return urlParams;
     }
 

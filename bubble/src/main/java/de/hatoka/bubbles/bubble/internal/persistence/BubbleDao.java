@@ -7,7 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BubbleDao extends JpaRepository<BubblePO, Long>
 {
-    public Optional<BubblePO> findByAbbreviation(String abbreviation);
+    default Optional<BubblePO> findByExternalID(String externalID)
+    {
+        return findByBubbleext(externalID);
+    }
+    /**
+     * @param externalID
+     * @return bubble found by externalid
+     * @deprecated don't use it outside only for JpaRepository use {@link #findByExternalID(String)}
+     */
+    @Deprecated
+    Optional<BubblePO> findByBubbleext(String externalID);
 
-    public Collection<BubblePO> findByUserref(String userRef);
+    Collection<BubblePO> findByUserref(String userRef);
 }

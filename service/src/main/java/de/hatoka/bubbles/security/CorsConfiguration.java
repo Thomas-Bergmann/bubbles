@@ -18,7 +18,7 @@ import de.hatoka.oauth.internal.remote.PolicyEnforcerInterceptor;
 @Order(100)
 public class CorsConfiguration
 {
-    @Value("${intershop.security.cors.allowedOrigins}")
+    @Value("${oidc.security.cors.allowedOrigins}")
     private String allowedOrigins;
     @Autowired
     private PolicyEnforcerInterceptor interceptor;

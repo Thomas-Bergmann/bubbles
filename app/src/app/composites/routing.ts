@@ -20,6 +20,19 @@ const routes: Routes = [
     }
   ]
 },
+{
+  path: 'humans',
+  canLoad: [AuthGuard],
+  canActivate: [AuthGuard],
+  children: [
+    { path: '',       pathMatch: 'full', component: composites.ListHumansViewComponent },
+    { path: ':human', pathMatch: 'prefix',
+      children: [
+        { path: '',          pathMatch: 'full', component: composites.DetailHumanViewComponent },
+      ]
+    }
+  ]
+},
 ];
 
 @NgModule({

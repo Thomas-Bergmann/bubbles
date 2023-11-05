@@ -39,6 +39,7 @@ dependencies {
     implementation project(':user')
     implementation project(':oidc')
     implementation project(':bubble')
+    implementation project(':human')
     implementation project(':oauth')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

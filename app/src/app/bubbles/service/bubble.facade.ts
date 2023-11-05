@@ -46,7 +46,7 @@ export class BubbleFacade {
   }
   createBubble(bubble: Bubble) {
     this.store.dispatch(addBubble({ bubble : bubble}));
-    this.service.addBubble(bubble.abbreviation, { name : bubble.name, userRef : this.userRef }).subscribe();
+    this.service.addBubble(bubble.localRef, { name : bubble.name, userRef : this.userRef }).subscribe();
   }
   deleteBubble(bubble: Bubble) {
     this.store.dispatch(removeBubble({ bubble : bubble}));

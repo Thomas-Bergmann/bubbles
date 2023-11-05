@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import de.hatoka.bubbles.bubble.internal.remote.BubbleController;
+import de.hatoka.bubbles.human.internal.remote.HumanController;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
 import de.hatoka.oauth.capi.business.TokenUtils;
 import de.hatoka.oauth.capi.remote.OAuthRefreshRO;
@@ -80,6 +81,7 @@ public class UserTokenController
     {
         List<String> uris = new ArrayList<>();
         uris.add(uriBuilder.replaceQuery(null).replacePath(BubbleController.PATH_ROOT).build().toUri().toString());
+        uris.add(uriBuilder.replaceQuery(null).replacePath(HumanController.PATH_ROOT).build().toUri().toString());
         return Strings.join(uris, ' ');
     }
 

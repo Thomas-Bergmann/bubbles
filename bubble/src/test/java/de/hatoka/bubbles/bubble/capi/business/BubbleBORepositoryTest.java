@@ -36,8 +36,8 @@ public class BubbleBORepositoryTest
     @Test
     public void testCrud()
     {
-        BubbleBO project1 = repository.createBubble(BUBBLE_REF_ONE, BUBBLE_REF_ONE.getAbbreviation(), USER_REF_ONE);
-        BubbleBO project2 = repository.createBubble(BUBBLE_REF_TWO, BUBBLE_REF_TWO.getAbbreviation(), USER_REF_ONE);
+        BubbleBO project1 = repository.createBubble(BUBBLE_REF_ONE, BUBBLE_REF_ONE.getExternalID(), USER_REF_ONE);
+        BubbleBO project2 = repository.createBubble(BUBBLE_REF_TWO, BUBBLE_REF_TWO.getExternalID(), USER_REF_ONE);
         Collection<BubbleBO> projects = repository.getAllBubbles();
         assertEquals(2, projects.size());
         assertTrue(projects.contains(project1));

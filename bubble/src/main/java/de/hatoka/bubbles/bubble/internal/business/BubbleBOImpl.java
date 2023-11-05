@@ -12,6 +12,7 @@ import de.hatoka.bubbles.bubble.capi.business.BubbleBO;
 import de.hatoka.bubbles.bubble.capi.business.BubbleRef;
 import de.hatoka.bubbles.bubble.internal.persistence.BubbleDao;
 import de.hatoka.bubbles.bubble.internal.persistence.BubblePO;
+import de.hatoka.user.capi.business.UserRef;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -70,12 +71,18 @@ public class BubbleBOImpl implements BubbleBO
     private synchronized BubblePO getPO()
     {
         LoggerFactory.getLogger(getClass()).trace("get bubblepo by name {}", bubbleRef.getGlobalRef());
-        return bubbleDao.findByAbbreviation(bubbleRef.getAbbreviation()).get();
+        return bubbleDao.findByExternalID(bubbleRef.getExternalID()).get();
     }
 
     @Override
     public Long getInternalId()
     {
         return getPO().getId();
+    }
+
+    @Override
+    public UserRef getUserRef()
+    {
+        return UserRef.globalRef(getPO().getUserRef());
     }
 }

@@ -9,14 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  */
 const appRoutes: Routes = [
   {
-    path: 'players',
+    path: 'bubbles',
     pathMatch: 'prefix',
     loadChildren: () => import('./composites').then(m => m.CompositeModule),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
   },
   {
-    path: 'tables',
+    path: 'humans',
     pathMatch: 'prefix',
     loadChildren: () => import('./composites').then(m => m.CompositeModule),
     canLoad: [AuthGuard],

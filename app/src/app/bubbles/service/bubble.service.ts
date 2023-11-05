@@ -7,10 +7,7 @@ import { ApiService } from 'src/app/core/service';
 
 interface BubbleDataRO {
   name : string;
-}
-
-interface BubbleInfoRO {
-  abbreviation : string;
+  userRef : string;
 }
 
 interface BubbleCreateRO extends BubbleDataRO {
@@ -22,7 +19,6 @@ interface BubbleRO {
   refGlobal : string;
   resourceURI: string;
   data : BubbleDataRO;
-  info : BubbleInfoRO;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -35,9 +31,9 @@ export class BubbleService {
       .pipe(map(ros => this.convertListBubbleRO(ros)));
   }
 
-  addBubble(abbreviation: string, data : BubbleCreateRO): Observable<{}> {
+  addBubble(externalID: string, data : BubbleCreateRO): Observable<{}> {
     return this.apiService
-      .put(`/bubbles/${abbreviation}`, data);
+      .put(`/bubbles/${externalID}`, data);
   }
 
   deleteBubble(bubble : Bubble): Observable<{}> {
@@ -52,5 +48,5 @@ export class BubbleService {
 
 function convertBubbleRO(ro : BubbleRO): Bubble
 {
-  return new Bubble().init(ro.resourceURI, ro.info.abbreviation, ro.data.name);
+  return new Bubble().init(ro.resourceURI, ro.refLocal, ro.data.name);
 }

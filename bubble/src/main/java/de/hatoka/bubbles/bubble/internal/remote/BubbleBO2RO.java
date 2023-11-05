@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import de.hatoka.bubbles.bubble.capi.business.BubbleBO;
 import de.hatoka.bubbles.bubble.capi.remote.BubbleDataRO;
-import de.hatoka.bubbles.bubble.capi.remote.BubbleInfoRO;
 import de.hatoka.bubbles.bubble.capi.remote.BubbleRO;
 
 @Component
@@ -16,17 +15,15 @@ public class BubbleBO2RO
 {
     public BubbleRO apply(BubbleBO bubble)
     {
-        BubbleInfoRO info = new BubbleInfoRO();
-        info.setAbbreviation(bubble.getRef().getAbbreviation());
         BubbleDataRO data = new BubbleDataRO();
         data.setName(bubble.getName());
+        data.setUserRef(bubble.getUserRef().getGlobalRef());
 
         BubbleRO result = new BubbleRO();
         result.setRefGlobal(bubble.getRef().getGlobalRef());
         result.setRefLocal(bubble.getRef().getLocalRef());
         result.setResourceURI("/bubbles/" + bubble.getRef().getLocalRef());
         result.setData(data);
-        result.setInfo(info);
         return result;
     }
 
