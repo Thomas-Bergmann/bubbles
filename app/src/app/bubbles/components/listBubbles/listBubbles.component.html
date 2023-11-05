@@ -1,0 +1,5 @@
+<cardBubble *ngFor="let bubble of bubbles"
+  [bubble]="bubble"
+  [selectedBubble]="selectedBubble"
+  (click)="select(bubble)"
+></cardBubble>

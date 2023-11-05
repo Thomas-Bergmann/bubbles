@@ -1,0 +1,10 @@
+<div class="outerbox">
+  <div class="header">Bubbles</div>
+  <div class="bubbles" *ngIf="bubbles">
+    <listBubbles
+      [bubbles]="bubbles"
+      [selectedBubble]="selectedBubble"
+      (selectBubble)="onSelectBubble($event)">
+    ></listBubbles>
+  </div>
+</div>

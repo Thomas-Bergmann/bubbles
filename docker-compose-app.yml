@@ -1,0 +1,9 @@
+version: "3"
+services:
+  app:
+    hostname: hatoka-bubbles-app
+    image: "local/hatoka/bubbles-app:latest"
+    ports:
+      - "4200:80"
+    volumes:
+      - ./app/src/assets/config:/usr/share/nginx/html/assets/config
