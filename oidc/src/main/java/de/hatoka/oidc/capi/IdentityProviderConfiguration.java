@@ -19,7 +19,7 @@ import de.hatoka.oidc.internal.remote.IdentityProviderController;
 @ComponentScan(basePackageClasses = { IdentityProviderBORepositoryImpl.class, IdentityProviderController.class, UserEventListener.class })
 public class IdentityProviderConfiguration implements WebMvcConfigurer
 {
-    @Value("${intershop.oidc.identityprovider.authenticationToken}")
+    @Value("${oidc.identityprovider.authenticationToken}")
     private String oidcAuthenticationToken;
 
     public String getOidcAuthenticationToken()

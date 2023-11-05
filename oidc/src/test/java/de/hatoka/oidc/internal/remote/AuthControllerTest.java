@@ -1,9 +1,3 @@
-/*
- * Copyright (C) Intershop Communications AG - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- * The content is proprietary and confidential.
- * Intershop Communication AG, Intershop Tower, 07740 Jena, Germany, 2018-04-05
- */
 package de.hatoka.oidc.internal.remote;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
