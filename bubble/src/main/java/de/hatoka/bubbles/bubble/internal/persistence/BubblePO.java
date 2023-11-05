@@ -13,7 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "bubbles", uniqueConstraints = { @UniqueConstraint(columnNames = { "abbreviation" }) })
+@Table(name = "bubbles", uniqueConstraints = { @UniqueConstraint(columnNames = { "bubble_ext" }) })
 public class BubblePO implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class BubblePO implements Serializable
     private Long id;
 
     /**
-     * Initial owner of the bubble
+     * Initial owner of the bubble (globalRef of user)
      */
     @NotNull
     @Column(name = "user_ref", nullable = false)
@@ -37,8 +37,8 @@ public class BubblePO implements Serializable
      * External key of bubble
      */
     @NotNull
-    @Column(name = "abbreviation", nullable = false)
-    private String abbreviation;
+    @Column(name = "bubble_ext", nullable = false)
+    private String bubbleext;
 
     /**
      * Readable name of bubble
@@ -69,7 +69,7 @@ public class BubblePO implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(abbreviation);
+        return Objects.hash(bubbleext);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BubblePO implements Serializable
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         BubblePO other = (BubblePO)obj;
-        return Objects.equals(abbreviation, other.abbreviation);
+        return Objects.equals(bubbleext, other.bubbleext);
     }
 
     public String getUserRef()
@@ -92,13 +92,13 @@ public class BubblePO implements Serializable
         this.userref = userRef;
     }
 
-    public String getAbbreviation()
+    public String getExternalID()
     {
-        return abbreviation;
+        return bubbleext;
     }
 
-    public void setAbbreviation(String abbreviation)
+    public void setExternalID(String externalID)
     {
-        this.abbreviation = abbreviation;
+        this.bubbleext = externalID;
     }
 }

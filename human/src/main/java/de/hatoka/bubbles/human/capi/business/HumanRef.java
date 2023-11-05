@@ -5,7 +5,7 @@ import java.util.Objects;
 public class HumanRef
 {
     private static final String REF_PREFIX = "human:";
-    private final String abbreviation;
+    private final String externalID;
 
     public static HumanRef globalRef(String globalRef)
     {
@@ -16,14 +16,14 @@ public class HumanRef
         return new HumanRef(globalRef.substring(REF_PREFIX.length()));
     }
 
-    public static HumanRef localRef(String humanAbbreviation)
+    public static HumanRef localRef(String externalID)
     {
-        return new HumanRef(humanAbbreviation);
+        return new HumanRef(externalID);
     }
 
-    private HumanRef(String humanAbbreviation)
+    private HumanRef(String externalID)
     {
-        this.abbreviation = humanAbbreviation;
+        this.externalID = externalID;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class HumanRef
 
     public String getLocalRef()
     {
-        return abbreviation;
+        return externalID;
     }
 
     public String getGlobalRef()
@@ -45,7 +45,7 @@ public class HumanRef
     @Override
     public int hashCode()
     {
-        return Objects.hash(abbreviation);
+        return Objects.hash(externalID);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class HumanRef
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         HumanRef other = (HumanRef)obj;
-        return Objects.equals(abbreviation, other.abbreviation);
+        return Objects.equals(externalID, other.externalID);
     }
 
-    public String getAbbreviation()
+    public String getExternalID()
     {
-        return abbreviation;
+        return externalID;
     }
 }

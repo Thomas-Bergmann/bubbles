@@ -10,6 +10,6 @@ public interface HumanBOFactory
     
     default HumanBO get(HumanPO po)
     {
-        return get(HumanRef.localRef(po.getAbbreviation()));
+        return get(HumanRef.localRef(po.getExternalID()));
     }
 }

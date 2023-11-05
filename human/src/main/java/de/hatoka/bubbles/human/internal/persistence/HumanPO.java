@@ -13,7 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "bubbles", uniqueConstraints = { @UniqueConstraint(columnNames = { "abbreviation" }) })
+@Table(name = "humans", uniqueConstraints = { @UniqueConstraint(columnNames = { "human_ext" }) })
 public class HumanPO implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -37,8 +37,8 @@ public class HumanPO implements Serializable
      * External key of human
      */
     @NotNull
-    @Column(name = "abbreviation", nullable = false)
-    private String abbreviation;
+    @Column(name = "human_ext", nullable = false)
+    private String humanext;
 
     /**
      * Readable name of human
@@ -69,7 +69,7 @@ public class HumanPO implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(abbreviation);
+        return Objects.hash(humanext);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class HumanPO implements Serializable
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         HumanPO other = (HumanPO)obj;
-        return Objects.equals(abbreviation, other.abbreviation);
+        return Objects.equals(humanext, other.humanext);
     }
 
     public String getUserRef()
@@ -92,13 +92,13 @@ public class HumanPO implements Serializable
         this.userref = userRef;
     }
 
-    public String getAbbreviation()
+    public String getExternalID()
     {
-        return abbreviation;
+        return humanext;
     }
 
-    public void setAbbreviation(String abbreviation)
+    public void setExternalID(String humanExternalID)
     {
-        this.abbreviation = abbreviation;
+        this.humanext = humanExternalID;
     }
 }

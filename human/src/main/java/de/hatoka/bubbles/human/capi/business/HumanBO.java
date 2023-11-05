@@ -1,5 +1,7 @@
 package de.hatoka.bubbles.human.capi.business;
 
+import de.hatoka.user.capi.business.UserRef;
+
 /**
  * A human can reference multiple bubbles.
  */
@@ -24,5 +26,9 @@ public interface HumanBO
      * @return internal identifier for foreign keys
      */
     Long getInternalId();
-    
+
+    /**
+     * @return owner of human
+     */
+    UserRef getUserRef();
 }

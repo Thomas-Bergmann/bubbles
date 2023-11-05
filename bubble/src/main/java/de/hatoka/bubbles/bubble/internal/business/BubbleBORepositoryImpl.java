@@ -27,7 +27,7 @@ public class BubbleBORepositoryImpl implements BubbleBORepository
     {
         BubblePO po = new BubblePO();
         po.setUserRef(userRef.getGlobalRef());
-        po.setAbbreviation(bubbleRef.getAbbreviation());
+        po.setExternalID(bubbleRef.getExternalID());
         po.setName(name);
         bubbleDao.save(po);
         return getBubble(bubbleRef);
@@ -43,7 +43,7 @@ public class BubbleBORepositoryImpl implements BubbleBORepository
     public Optional<BubbleBO> findBubble(BubbleRef bubbleRef)
     {
         LoggerFactory.getLogger(getClass()).trace("get bubblepo by abbreviation {}", bubbleRef.getGlobalRef());
-        return bubbleDao.findByAbbreviation(bubbleRef.getAbbreviation()).map(bubbleBOFactory::get);
+        return bubbleDao.findByExternalID(bubbleRef.getExternalID()).map(bubbleBOFactory::get);
     }
 
     @Override

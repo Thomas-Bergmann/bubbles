@@ -41,7 +41,7 @@ public class BubbleBOTest
     @Test
     public void testCRUD() throws IOException
     {
-        BubbleBO bubble = bubbleRepo.createBubble(BUBBLE_REF_ONE, BUBBLE_REF_ONE.getAbbreviation(), USER_REF_ONE);
+        BubbleBO bubble = bubbleRepo.createBubble(BUBBLE_REF_ONE, BUBBLE_REF_ONE.getExternalID(), USER_REF_ONE);
         assertEquals(NAME, bubble.getName());
         assertEquals("bubble:BubbleBOTest", bubble.getRef().getGlobalRef());
     }

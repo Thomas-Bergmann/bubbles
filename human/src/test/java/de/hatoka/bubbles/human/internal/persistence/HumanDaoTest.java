@@ -30,7 +30,7 @@ public class HumanDaoTest
     {
         HumanPO HumanPO = newHumanPO(USER_REF_ONE, NAME);
         dao.save(HumanPO);
-        Optional<HumanPO> findHumanPO= dao.findByAbbreviation(HUMAN_REF_ONE.getAbbreviation());
+        Optional<HumanPO> findHumanPO= dao.findByExternalID(HUMAN_REF_ONE.getExternalID());
         assertEquals(HumanPO, findHumanPO.get());
         dao.delete(HumanPO);
     }
@@ -39,7 +39,7 @@ public class HumanDaoTest
     {
         HumanPO result = new HumanPO();
         result.setUserRef(userRef.getGlobalRef());
-        result.setAbbreviation(name);
+        result.setExternalID(name);
         result.setName(name);
         return result;
     }

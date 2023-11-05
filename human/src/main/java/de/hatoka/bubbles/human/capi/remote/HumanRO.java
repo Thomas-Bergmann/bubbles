@@ -11,7 +11,6 @@ public class HumanRO
     @JsonProperty("resourceURI")
     private String resourceURI;
 
-    private HumanInfoRO info;
     private HumanDataRO data;
 
     public HumanRO()
@@ -23,33 +22,20 @@ public class HumanRO
         return refLocal;
     }
 
-
     public void setRefLocal(String refLocal)
     {
         this.refLocal = refLocal;
     }
-
 
     public String getRefGlobal()
     {
         return refGlobal;
     }
 
-
     public void setRefGlobal(String refGlobal)
     {
         this.refGlobal = refGlobal;
     }
-
-
-	public HumanInfoRO getInfo() {
-		return info;
-	}
-
-
-	public void setInfo(HumanInfoRO info) {
-		this.info = info;
-	}
 
     public String getResourceURI()
     {

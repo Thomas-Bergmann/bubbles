@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 import de.hatoka.bubbles.bubble.capi.BubbleConfiguration;
+import de.hatoka.bubbles.human.capi.HumanConfiguration;
 import de.hatoka.bubbles.security.CorsConfiguration;
 import de.hatoka.bubbles.security.WebSecurityConfiguration;
 import de.hatoka.common.capi.CommonConfiguration;
@@ -20,7 +21,7 @@ import de.hatoka.user.capi.UserConfiguration;
 @ComponentScan
 @Import(value = { CorsConfiguration.class, WebSecurityConfiguration.class,
                 IdentityProviderConfiguration.class, CommonConfiguration.class, UserConfiguration.class,
-                BubbleConfiguration.class, 
+                BubbleConfiguration.class, HumanConfiguration.class,
                 OAuthConfiguration.class
                 })
 public class Application extends SpringBootServletInitializer

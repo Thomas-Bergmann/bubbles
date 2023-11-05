@@ -41,7 +41,7 @@ public class HumanBOTest
     @Test
     public void testCRUD() throws IOException
     {
-        HumanBO human = humanRepo.createHuman(HUMAN_REF_ONE, HUMAN_REF_ONE.getAbbreviation(), USER_REF_ONE);
+        HumanBO human = humanRepo.createHuman(HUMAN_REF_ONE, HUMAN_REF_ONE.getExternalID(), USER_REF_ONE);
         assertEquals(NAME, human.getName());
         assertEquals("human:HumanBOTest", human.getRef().getGlobalRef());
     }

@@ -30,7 +30,7 @@ public class BubbleDaoTest
     {
         BubblePO BubblePO = newBubblePO(USER_REF_ONE, NAME);
         dao.save(BubblePO);
-        Optional<BubblePO> findBubblePO= dao.findByAbbreviation(BUBBLE_REF_ONE.getAbbreviation());
+        Optional<BubblePO> findBubblePO= dao.findByExternalID(BUBBLE_REF_ONE.getExternalID());
         assertEquals(BubblePO, findBubblePO.get());
         dao.delete(BubblePO);
     }
@@ -39,7 +39,7 @@ public class BubbleDaoTest
     {
         BubblePO result = new BubblePO();
         result.setUserRef(userRef.getGlobalRef());
-        result.setAbbreviation(name);
+        result.setExternalID(name);
         result.setName(name);
         return result;
     }

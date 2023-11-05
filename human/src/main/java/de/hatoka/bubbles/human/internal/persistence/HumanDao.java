@@ -7,7 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HumanDao extends JpaRepository<HumanPO, Long>
 {
-    public Optional<HumanPO> findByAbbreviation(String abbreviation);
+    default Optional<HumanPO> findByExternalID(String externalID)
+    {
+        return findByHumanext(externalID);
+    }
 
-    public Collection<HumanPO> findByUserref(String userRef);
+    /**
+     * @param humanExternalID
+     * @return human found by externalid
+     * @deprecated don't use it outside only for JpaRepository use {@link #findByExternalID(String)}
+     */
+    @Deprecated
+    Optional<HumanPO> findByHumanext(String humanExternalID);
+
+    Collection<HumanPO> findByUserref(String userRef);
 }

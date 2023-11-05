@@ -11,7 +11,6 @@ public class BubbleRO
     @JsonProperty("resourceURI")
     private String resourceURI;
 
-    private BubbleInfoRO info;
     private BubbleDataRO data;
 
     public BubbleRO()
@@ -40,16 +39,6 @@ public class BubbleRO
     {
         this.refGlobal = refGlobal;
     }
-
-
-	public BubbleInfoRO getInfo() {
-		return info;
-	}
-
-
-	public void setInfo(BubbleInfoRO info) {
-		this.info = info;
-	}
 
     public String getResourceURI()
     {

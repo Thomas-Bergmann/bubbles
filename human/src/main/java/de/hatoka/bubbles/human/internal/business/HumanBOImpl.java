@@ -12,6 +12,7 @@ import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.internal.persistence.HumanDao;
 import de.hatoka.bubbles.human.internal.persistence.HumanPO;
+import de.hatoka.user.capi.business.UserRef;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -70,12 +71,18 @@ public class HumanBOImpl implements HumanBO
     private synchronized HumanPO getPO()
     {
         LoggerFactory.getLogger(getClass()).trace("get humanpo by name {}", humanRef.getGlobalRef());
-        return humanDao.findByAbbreviation(humanRef.getAbbreviation()).get();
+        return humanDao.findByExternalID(humanRef.getExternalID()).get();
     }
 
     @Override
     public Long getInternalId()
     {
         return getPO().getId();
+    }
+
+    @Override
+    public UserRef getUserRef()
+    {
+        return UserRef.globalRef(getPO().getUserRef());
     }
 }

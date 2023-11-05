@@ -5,7 +5,7 @@ import java.util.Objects;
 public class BubbleRef
 {
     private static final String REF_PREFIX = "bubble:";
-    private final String abbreviation;
+    private final String externalID;
 
     public static BubbleRef globalRef(String globalRef)
     {
@@ -16,14 +16,14 @@ public class BubbleRef
         return new BubbleRef(globalRef.substring(REF_PREFIX.length()));
     }
 
-    public static BubbleRef localRef(String bubbleAbbreviation)
+    public static BubbleRef localRef(String externalID)
     {
-        return new BubbleRef(bubbleAbbreviation);
+        return new BubbleRef(externalID);
     }
 
-    private BubbleRef(String bubbleAbbreviation)
+    private BubbleRef(String externalID)
     {
-        this.abbreviation = bubbleAbbreviation;
+        this.externalID = externalID;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class BubbleRef
 
     public String getLocalRef()
     {
-        return abbreviation;
+        return externalID;
     }
 
     public String getGlobalRef()
@@ -45,7 +45,7 @@ public class BubbleRef
     @Override
     public int hashCode()
     {
-        return Objects.hash(abbreviation);
+        return Objects.hash(externalID);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class BubbleRef
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         BubbleRef other = (BubbleRef)obj;
-        return Objects.equals(abbreviation, other.abbreviation);
+        return Objects.equals(externalID, other.externalID);
     }
 
-    public String getAbbreviation()
+    public String getExternalID()
     {
-        return abbreviation;
+        return externalID;
     }
 }

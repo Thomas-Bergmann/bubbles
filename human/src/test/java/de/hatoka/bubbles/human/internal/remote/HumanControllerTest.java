@@ -57,13 +57,13 @@ public class HumanControllerTest
     public void createHumanAndDelete()
     {
         HumanCreateRO data = new HumanCreateRO();
-        data.setName(HUMAN_REF1.getAbbreviation());
+        data.setName(HUMAN_REF1.getExternalID());
         data.setUserRef(USER_REF_ONE.getLocalRef());
         putHuman(HUMAN_REF1, data);
 
         HumanRO ro = getHuman(HUMAN_REF1);
         assertNotNull(ro, "human created and found");
-        assertNotNull(ro.getInfo(), "human contains info");
+        assertNotNull(ro.getData(), "human contains data");
         assertEquals("name-1", ro.getData().getName());
         deleteHuman(HUMAN_REF1);
     }
@@ -73,9 +73,9 @@ public class HumanControllerTest
     {
         HumanCreateRO data = new HumanCreateRO();
         data.setUserRef(USER_REF_ONE.getLocalRef());
-        data.setName(HUMAN_REF1.getAbbreviation());
+        data.setName(HUMAN_REF1.getExternalID());
         putHuman(HUMAN_REF1, data);
-        data.setName(HUMAN_REF2.getAbbreviation());
+        data.setName(HUMAN_REF2.getExternalID());
         putHuman(HUMAN_REF2, data);
 
         List<HumanRO> bubbles = getbubbles(USER_REF_ONE);
@@ -93,7 +93,7 @@ public class HumanControllerTest
     private Map<String, String> createURIParameter(HumanRef ref)
     {
         Map<String, String> urlParams = new HashMap<>();
-        urlParams.put(HumanController.PATH_VAR_HUMANID, ref.getAbbreviation());
+        urlParams.put(HumanController.PATH_VAR_HUMANID, ref.getExternalID());
         return urlParams;
     }
 

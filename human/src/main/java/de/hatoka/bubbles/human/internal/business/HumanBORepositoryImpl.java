@@ -27,7 +27,7 @@ public class HumanBORepositoryImpl implements HumanBORepository
     {
         HumanPO po = new HumanPO();
         po.setUserRef(userRef.getGlobalRef());
-        po.setAbbreviation(humanRef.getAbbreviation());
+        po.setExternalID(humanRef.getExternalID());
         po.setName(name);
         humanDao.save(po);
         return getHuman(humanRef);
@@ -43,7 +43,7 @@ public class HumanBORepositoryImpl implements HumanBORepository
     public Optional<HumanBO> findHuman(HumanRef humanRef)
     {
         LoggerFactory.getLogger(getClass()).trace("get humanpo by abbreviation {}", humanRef.getGlobalRef());
-        return humanDao.findByAbbreviation(humanRef.getAbbreviation()).map(humanBOFactory::get);
+        return humanDao.findByExternalID(humanRef.getExternalID()).map(humanBOFactory::get);
     }
 
     @Override

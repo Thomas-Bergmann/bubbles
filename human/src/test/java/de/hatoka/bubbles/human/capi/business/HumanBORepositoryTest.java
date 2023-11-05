@@ -36,8 +36,8 @@ public class HumanBORepositoryTest
     @Test
     public void testCrud()
     {
-        HumanBO project1 = repository.createHuman(HUMAN_REF_ONE, HUMAN_REF_ONE.getAbbreviation(), USER_REF_ONE);
-        HumanBO project2 = repository.createHuman(HUMAN_REF_TWO, HUMAN_REF_TWO.getAbbreviation(), USER_REF_ONE);
+        HumanBO project1 = repository.createHuman(HUMAN_REF_ONE, HUMAN_REF_ONE.getExternalID(), USER_REF_ONE);
+        HumanBO project2 = repository.createHuman(HUMAN_REF_TWO, HUMAN_REF_TWO.getExternalID(), USER_REF_ONE);
         Collection<HumanBO> projects = repository.getAllHumans();
         assertEquals(2, projects.size());
         assertTrue(projects.contains(project1));
