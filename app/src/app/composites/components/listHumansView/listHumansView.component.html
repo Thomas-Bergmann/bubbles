@@ -1,0 +1,15 @@
+<div class="outerbox">
+  <div class="header">Humans</div>
+  <div class="humans">
+    <listHumans
+      [humans]="humans"
+      (selectHuman)="onSelectHuman($event)">
+    ></listHumans>
+  </div>
+</div>
+<div class="outerbox">
+  <div class="header">New Human</div>
+  <div class="addhuman">
+    <addHuman></addHuman>
+  </div>
+</div>

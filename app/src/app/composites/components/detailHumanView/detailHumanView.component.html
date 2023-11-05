@@ -1,0 +1,10 @@
+<div class="outerbox">
+  <div class="header">Humans</div>
+  <div class="humans" *ngIf="humans">
+    <listHumans
+      [humans]="humans"
+      [selectedHuman]="selectedHuman"
+      (selectHuman)="onSelectHuman($event)">
+    ></listHumans>
+  </div>
+</div>

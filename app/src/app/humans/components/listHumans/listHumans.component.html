@@ -1,0 +1,5 @@
+<cardHuman *ngFor="let human of humans"
+  [human]="human"
+  [selectedHuman]="selectedHuman"
+  (click)="select(human)"
+></cardHuman>
