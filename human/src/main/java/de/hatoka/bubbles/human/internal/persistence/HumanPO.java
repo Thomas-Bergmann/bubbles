@@ -46,6 +46,10 @@ public class HumanPO implements Serializable
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "date_of_birth", nullable = true)
+    private String dateOfBirth;
+    @Column(name = "date_of_death", nullable = true)
+    private String dateOfDeath;
 
     public HumanPO()
     {
@@ -100,5 +104,25 @@ public class HumanPO implements Serializable
     public void setExternalID(String humanExternalID)
     {
         this.humanext = humanExternalID;
+    }
+
+    public String getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getDateOfDeath()
+    {
+        return dateOfDeath;
+    }
+
+    public void setDateOfDeath(String dateOfDeath)
+    {
+        this.dateOfDeath = dateOfDeath;
     }
 }

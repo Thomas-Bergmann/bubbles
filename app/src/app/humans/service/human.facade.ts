@@ -46,7 +46,7 @@ export class HumanFacade {
   }
   createHuman(human: Human) {
     this.store.dispatch(addHuman({ human : human}));
-    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef }).subscribe();
+    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath }).subscribe();
   }
   deleteHuman(human: Human) {
     this.store.dispatch(removeHuman({ human : human}));

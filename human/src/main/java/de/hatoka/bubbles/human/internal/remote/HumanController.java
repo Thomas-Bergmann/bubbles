@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.capi.remote.HumanCreateRO;
+import de.hatoka.bubbles.human.capi.remote.HumanDataRO;
 import de.hatoka.bubbles.human.capi.remote.HumanRO;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
 import de.hatoka.user.capi.business.UserRef;
@@ -67,7 +69,30 @@ public class HumanController
         {
             errorSupport.throwNotFoundException("found.human", humanRef.toString());
         }
-        humanRepository.createHuman(humanRef, input.getName(), userRef);
+        HumanBO human = humanRepository.createHuman(humanRef, input.getName(), userRef);
+        human.setDateOfBirth(input.getDateOfBirth());
+        human.setDateOfDeath(input.getDateOfDeath());
+    }
+
+    @PatchMapping(value = PATH_SUB_HUMAN, consumes = { APPLICATION_JSON_VALUE })
+    @ResponseStatus(HttpStatus.CREATED)
+    public void patchHuman(@PathVariable(PATH_VAR_HUMANID) String humanID, @RequestBody HumanDataRO input)
+    {
+        HumanRef humanRef = HumanRef.localRef(humanID);
+        Optional<HumanBO> humanOpt = humanRepository.findHuman(humanRef);
+        if (!humanOpt.isPresent())
+        {
+            errorSupport.throwNotFoundException("notfound.human", humanRef.toString());
+        }
+        HumanBO human = humanOpt.get();
+        if (input.getDateOfBirth() != null)
+        {
+            human.setDateOfBirth(input.getDateOfBirth());
+        }
+        if (input.getDateOfDeath() != null)
+        {
+            human.setDateOfDeath(input.getDateOfDeath());
+        }
     }
 
     @GetMapping(PATH_SUB_HUMAN)

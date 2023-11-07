@@ -2,6 +2,8 @@
     <div class="flex">
         <div class="box">
             <input type="text" name="name" placeholder="abbreviation of human" [(ngModel)]="nameField" />
+            <br /><input type="text" name="dateOfBirth" placeholder="yyyy/mm/dd" [(ngModel)]="birthField" />
+            <br /><input type="text" name="dateOfDeath" placeholder="yyyy/mm/dd" [(ngModel)]="deathField" />
             <br /><input type="submit" value="add" (click)="_addHuman()" />
         </div>
     </div>

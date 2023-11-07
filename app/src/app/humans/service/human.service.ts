@@ -8,6 +8,8 @@ import { ApiService } from 'src/app/core/service';
 interface HumanDataRO {
   name : string;
   userRef : string;
+  dateOfBirth : string;
+  dateOfDeath : string;
 }
 
 interface HumanCreateRO extends HumanDataRO {
@@ -48,5 +50,5 @@ export class HumanService {
 
 function convertHumanRO(ro : HumanRO): Human
 {
-  return new Human().init(ro.resourceURI, ro.refLocal, ro.data.name);
+  return new Human().init(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath);
 }

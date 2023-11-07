@@ -12,6 +12,7 @@ public class HumanRO
     private String resourceURI;
 
     private HumanDataRO data;
+    private HumanInfoRO info;
 
     public HumanRO()
     {
@@ -55,5 +56,15 @@ public class HumanRO
     public void setData(HumanDataRO data)
     {
         this.data = data;
+    }
+
+    public HumanInfoRO getInfo()
+    {
+        return info;
+    }
+
+    public void setInfo(HumanInfoRO info)
+    {
+        this.info = info;
     }
 }

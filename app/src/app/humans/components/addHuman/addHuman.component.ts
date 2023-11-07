@@ -9,6 +9,8 @@ import { Human, HumanFacade } from 'src/app/humans';
 })
 export class AddHumanComponent {
   nameField = '';
+  birthField = '';
+  deathField = '';
 
   constructor(
     private readonly humanFacade: HumanFacade,
@@ -17,7 +19,7 @@ export class AddHumanComponent {
 
   _addHuman() {
     this.humanFacade.createHuman(
-      new Human().newHuman(this.nameField));
+      new Human().newHuman(this.nameField, this.birthField, this.deathField));
       this.nameField = '';
   }
 }
