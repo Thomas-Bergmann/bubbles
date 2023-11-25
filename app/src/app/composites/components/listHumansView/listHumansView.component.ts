@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Unsubscribable } from 'rxjs';
 
-import { HumanFacade, HumanState, Human, selectAllHumans } from 'src/app/humans';
+import { HumanFacade, HumanState, Human, selectAllHumans, listHumansComponentOptionCard } from 'src/app/humans';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -15,6 +15,7 @@ export class ListHumansViewComponent implements OnInit  {
   allHumans$: Observable<Human[]>;
   humans: readonly Human[] = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
+  displayOption = listHumansComponentOptionCard;
 
   constructor(
     private readonly humanStore: Store<HumanState>,
@@ -35,6 +36,6 @@ export class ListHumansViewComponent implements OnInit  {
   }
 
   public onSelectHuman(p: Human): void {
-    this.router.navigate([p.name], { relativeTo: this.route.parent });
+    this.router.navigate([p.localRef], { relativeTo: this.route.parent });
   }
 }

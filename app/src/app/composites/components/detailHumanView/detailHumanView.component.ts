@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Unsubscribable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { HumanFacade, HumanState, Human, selectAllHumans } from 'src/app/humans';
+import { HumanFacade, HumanState, Human, selectAllHumans, listHumansComponentOptionCanvas } from 'src/app/humans';
 
 @Component({
   selector: 'detailHumanView',
@@ -15,9 +15,9 @@ export class DetailHumanViewComponent implements OnInit  {
   allHumans$: Observable<Human[]>;
   humans: readonly Human[]  = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
-
   routeHuman? : string;
   selectedHuman? : Human;
+  displayOption = listHumansComponentOptionCanvas;
 
   constructor(
     private readonly humanStore: Store<HumanState>,
@@ -73,10 +73,7 @@ export class DetailHumanViewComponent implements OnInit  {
   _onUpdateHuman(human:Human) {
     this.humanFacade.updateHuman(human);
   }
-  _deleteSelectedHuman() {
-    if (this.selectedHuman !== undefined)
-    {
-      this.humanFacade.deleteHuman(this.selectedHuman);
-    }
+  _onDeleteHuman(human:Human) {
+    this.humanFacade.deleteHuman(human);
   }
 }
