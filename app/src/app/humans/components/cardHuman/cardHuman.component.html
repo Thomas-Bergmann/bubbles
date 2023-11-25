@@ -1,7 +1,8 @@
 <div class="cardHuman">
     <div class="flex">
-        <div class="ref">{{ human.localRef }}</div>
+        <div class="name">{{ human.name }}</div>
+        <div class="age">( {{ human.age }} )</div>
         <div class="selectedHuman" *ngIf="human == selectedHuman" title="selected">&nbsp;</div>
     </div>
-    <div class="name">{{ human.name }}</div>
+    <div class="life">{{ human.dateOfBirth }} ... {{ human.dateOfDeath }}</div>
 </div>

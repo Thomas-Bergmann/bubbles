@@ -1,8 +1,3 @@
-export interface ServiceState {
-  serviceEndpoint: ServiceEndpoint,
-  serviceErrors : ServiceError[]
-}
-
 export class ServiceEndpoint {
   uri: String = "null://";
   empty()

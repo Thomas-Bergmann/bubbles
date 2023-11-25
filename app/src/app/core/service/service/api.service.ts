@@ -68,26 +68,24 @@ export class ApiService {
     return result;
   }
 
-  private handleErrors<T>(dispatch?: boolean): MonoTypeOperatorFunction<T> {
+  private handleErrors<T>(): MonoTypeOperatorFunction<T> {
     return catchError(error => {
-      if (dispatch) {
-        if (error.status === 0) {
-          this.store.dispatch(serverTimeout());
+      if (error.status === 0) {
+        this.store.dispatch(serverTimeout());
+        return EMPTY;
+      } else if (error.status >= 400 && error.status < 500) {
+        this.store.dispatch(clientError({error : { status : error.status, message : error.payload }}));
           return EMPTY;
-        } else if (error.status >= 400 && error.status < 500) {
-            this.store.dispatch(clientError({ status : error.status, message : error.payload }));
-            return EMPTY;
-          } else if (error.status >= 500 && error.status < 600) {
-          this.store.dispatch(serverError({ status : error.status, message : error.payload }));
-          return EMPTY;
-        }
+        } else if (error.status >= 500 && error.status < 600) {
+        this.store.dispatch(serverError({error : { status : error.status, message : error.payload }}));
+        return EMPTY;
       }
       return throwError(error);
     });
   }
 
   private execute<T>(httpCall$: Observable<T>, options? : ApiOptions): Observable<T> {
-    return httpCall$.pipe(this.handleErrors(options == null ? false : options.useStoreErrorHandling));
+    return httpCall$.pipe(this.handleErrors());
   }
   private constructUrlForPath(path: string): Observable<string> {
     return combineLatest([

@@ -19,11 +19,11 @@ export const selectCurrentUser = createSelector(
 
 export const selectAccessToken = createSelector(
   selectFeature,
-  (state: OIDCState) => state.accessToken);
+  (state: OIDCState) => state.accessToken.expiresIn > 0 ? state.accessToken : undefined);
 
 export const selectRefreshToken = createSelector(
   selectFeature,
-  (state: OIDCState) => state.refreshToken);
+  (state: OIDCState) => state.refreshToken.expiresIn > 0 ? state.refreshToken : undefined);
 
 export const selectResources = createSelector(
   selectFeature,

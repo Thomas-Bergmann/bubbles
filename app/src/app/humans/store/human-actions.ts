@@ -15,8 +15,3 @@ export const removeHuman = createAction(
   'Remove Human',
   props<{ human: Human }>()
 );
-
-export const updateHuman = createAction(
-  'Update Human',
-  props<{ human: Human }>()
-)

@@ -1,5 +1,6 @@
 package de.hatoka.bubbles.human.capi.business;
 
+import de.hatoka.common.capi.value.IncompleteDate;
 import de.hatoka.user.capi.business.UserRef;
 
 /**
@@ -31,4 +32,9 @@ public interface HumanBO
      * @return owner of human
      */
     UserRef getUserRef();
+
+    void setDateOfBirth(IncompleteDate dateOfBirth);
+    IncompleteDate getDateOfBirth();
+    void setDateOfDeath(IncompleteDate dateOfDeath);
+    IncompleteDate getDateOfDeath();
 }

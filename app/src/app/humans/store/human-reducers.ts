@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { Human } from './human-models';
-import { addHumans, addHuman, removeHuman, updateHuman } from './human-actions';
+import { addHumans, addHuman, removeHuman } from './human-actions';
 
 export const humanFeatureKey = 'humanState';
 
@@ -19,7 +19,6 @@ const _humanReducer = createReducer(
   on(addHumans, (state, action) => _updateHumansAtState(state, _setHumans(state.humans, action.humans))),
   on(addHuman, (state, action) => _updateHumansAtState(state, _setHuman(state.humans, action.human))),
   on(removeHuman, (state, action) => _updateHumansAtState(state, _removeHuman(state.humans, action.human))),
-  on(updateHuman, (state, action) => _updateHumansAtState(state, _setHuman(state.humans, action.human))),
 );
 
 export function humanReducer(state: HumanState | undefined, action: Action) {

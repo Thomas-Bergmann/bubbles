@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
 import { HumanService } from './human.service';
-import { HumanState, Human, addHumans, addHuman, updateHuman, removeHuman } from 'src/app/humans/store';
+import { HumanState, Human, addHumans, addHuman, removeHuman } from 'src/app/humans/store';
 import { OIDCState, selectCurrentUser } from 'src/app/oidc';
 import { ServiceEndpoint, ServiceState, updateServiceLocation } from 'src/app/core/service';
 import { environment } from 'src/environments/environment';
@@ -46,7 +46,12 @@ export class HumanFacade {
   }
   createHuman(human: Human) {
     this.store.dispatch(addHuman({ human : human}));
-    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef }).subscribe();
+    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath }).subscribe(() => {
+      this.getHuman(human.localRef);
+    });
+  }
+  getHuman(localRef: string) {
+    this.service.getHuman(localRef).subscribe(human => addHuman({ human : human}));
   }
   deleteHuman(human: Human) {
     this.store.dispatch(removeHuman({ human : human}));

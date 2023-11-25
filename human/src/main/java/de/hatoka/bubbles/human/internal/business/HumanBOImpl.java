@@ -12,6 +12,7 @@ import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.internal.persistence.HumanDao;
 import de.hatoka.bubbles.human.internal.persistence.HumanPO;
+import de.hatoka.common.capi.value.IncompleteDate;
 import de.hatoka.user.capi.business.UserRef;
 
 @Component
@@ -56,7 +57,6 @@ public class HumanBOImpl implements HumanBO
         humanDao.delete(po);
     }
 
-    @SuppressWarnings("unused")
 	private void savePO(HumanPO humanPO)
     {
     	humanDao.save(humanPO);
@@ -84,5 +84,33 @@ public class HumanBOImpl implements HumanBO
     public UserRef getUserRef()
     {
         return UserRef.globalRef(getPO().getUserRef());
+    }
+
+    @Override
+    public void setDateOfBirth(IncompleteDate dateOfBirth)
+    {
+        HumanPO po = getPO();
+        po.setDateOfBirth(dateOfBirth.toString());
+        savePO(po);
+    }
+
+    @Override
+    public IncompleteDate getDateOfBirth()
+    {
+        return IncompleteDate.valueOf(getPO().getDateOfBirth());
+    }
+
+    @Override
+    public void setDateOfDeath(IncompleteDate dateOfDeath)
+    {
+        HumanPO po = getPO();
+        po.setDateOfDeath(dateOfDeath.toString());
+        savePO(po);
+    }
+
+    @Override
+    public IncompleteDate getDateOfDeath()
+    {
+        return IncompleteDate.valueOf(getPO().getDateOfDeath());
     }
 }

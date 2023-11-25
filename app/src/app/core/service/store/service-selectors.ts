@@ -1,11 +1,15 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
-import { ServiceState } from './service-models';
-import { serviceFeatureKey } from './service-reducers';
+import { serviceFeatureKey, ServiceState } from './service-reducers';
 
 const selectFeature = createFeatureSelector<ServiceState>(serviceFeatureKey);
 
 export const restEndpoint = createSelector(
   selectFeature,
   (state: ServiceState) => state.serviceEndpoint.uri
+);
+
+export const selectClientError = createSelector(
+  selectFeature,
+  (state: ServiceState) => state.clientErrors
 );
