@@ -10,6 +10,7 @@ import * as component from './components';
 @NgModule({
   declarations: [
     component.AddHumanComponent,
+    component.EditHumanComponent,
     component.CardHumanComponent,
     component.ListHumansComponent,
   ],
@@ -24,6 +25,7 @@ import * as component from './components';
   ],
   exports: [
     component.AddHumanComponent,
+    component.EditHumanComponent,
     component.ListHumansComponent,
   ]
 })

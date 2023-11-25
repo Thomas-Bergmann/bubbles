@@ -1,10 +1,20 @@
 <div class="outerbox">
   <div class="header">Humans</div>
-  <div class="humans" *ngIf="humans">
+  <div class="humans">
     <listHumans
       [humans]="humans"
-      [selectedHuman]="selectedHuman"
       (selectHuman)="onSelectHuman($event)">
     ></listHumans>
+  </div>
+  <div class="header" *ngIf="selectedHuman">Edit Human</div>
+  <div class="editHuman" *ngIf="selectedHuman">
+    <editHuman
+      [human]="selectedHuman"
+      (updateHuman)="_onUpdateHuman($event)">
+    ></editHuman>
+  </div>
+  <div class="header" *ngIf="selectedHuman">Delete Human</div>
+  <div class="deleteHuman" *ngIf="selectedHuman">
+    <input type="submit" value="delete" (click)="_deleteSelectedHuman()" />
   </div>
 </div>

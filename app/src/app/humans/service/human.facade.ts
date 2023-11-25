@@ -34,7 +34,6 @@ export class HumanFacade {
     {
       return;
     }
-    // console.log("loadHumans human.serviceEndPoint", environment.serviceEndPoint);
     this.serviceStore.dispatch(updateServiceLocation(
       { serviceEndpoint : new ServiceEndpoint().init(environment.serviceEndPoint)}));
     this.areHumansLoaded.set(this.userRef, true);
@@ -46,12 +45,17 @@ export class HumanFacade {
   }
   createHuman(human: Human) {
     this.store.dispatch(addHuman({ human : human}));
-    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath }).subscribe(() => {
-      this.getHuman(human.localRef);
-    });
+    this.service.addHuman(human.localRef, { name : human.name, userRef : this.userRef, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath })
+      .subscribe(() => this.getHuman(human.localRef));
   }
   getHuman(localRef: string) {
-    this.service.getHuman(localRef).subscribe(human => addHuman({ human : human}));
+    this.service.getHuman(localRef)
+      .subscribe(human => this.store.dispatch(addHuman({ human : human})));
+  }
+  updateHuman(human: Human) {
+    this.store.dispatch(addHuman({ human : human}));
+    this.service.updateHuman(human.localRef, { name : human.name, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath })
+      .subscribe(() => this.getHuman(human.localRef));
   }
   deleteHuman(human: Human) {
     this.store.dispatch(removeHuman({ human : human}));

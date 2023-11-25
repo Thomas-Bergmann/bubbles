@@ -21,5 +21,7 @@ export class AddHumanComponent {
     this.humanFacade.createHuman(
       new Human().newHuman(this.nameField, this.birthField, this.deathField));
       this.nameField = '';
+      this.birthField = '';
+      this.deathField = '';
   }
 }

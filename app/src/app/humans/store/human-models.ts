@@ -1,4 +1,3 @@
-
 export class Human {
   resourceURI: string = ""; // used for service
   localRef: string = ""; // used for route (abbreviation)
@@ -20,7 +19,7 @@ export class Human {
   }
   newHuman(name: string, dateOfBirth: string, dateOfDeath: string)
   {
-    var localRef = name;
+    var localRef = crypto.randomUUID();
     this.resourceURI =`/humans/${localRef}`;
     this.localRef = localRef;
     this.name = name;

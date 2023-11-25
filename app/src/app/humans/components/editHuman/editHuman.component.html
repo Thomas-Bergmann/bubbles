@@ -1,0 +1,8 @@
+<div class="flex">
+    <div class="box">
+        <input type="text" name="name" placeholder="name of human" [(ngModel)]="nameField" />
+        <br /><input type="text" name="dateOfBirth" placeholder="yyyy/mm/dd" [(ngModel)]="birthField" />
+        <br /><input type="text" name="dateOfDeath" placeholder="yyyy/mm/dd" [(ngModel)]="deathField" />
+        <br /><input type="submit" value="update" (click)="_updateHuman()" />
+    </div>
+</div>

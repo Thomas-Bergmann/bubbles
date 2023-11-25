@@ -6,7 +6,7 @@ import { humanFeatureKey, HumanState } from './human-reducers';
 const selectFeature = createFeatureSelector<HumanState>(humanFeatureKey);
 
 export const selectAllHumans = createSelector(selectFeature, getAllHumansFromState);
-function getAllHumansFromState (state: HumanState) : ReadonlyMap<string, Human>
+function getAllHumansFromState (state: HumanState) : Human[]
 {
-  return state.humans;
+  return Array.from(state.humans.values());;
 }
