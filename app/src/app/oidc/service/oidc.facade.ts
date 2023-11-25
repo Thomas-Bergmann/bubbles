@@ -6,7 +6,7 @@ import { OIDCAuthorizationService } from './oidc-authorization';
 import { OIDCService } from './oidc.service';
 import { OIDCState, OIDCProvider, addProviders, defineUser, setAccessToken, addResources, setRefreshToken } from 'src/app/oidc/store';
 import { environment } from 'src/environments/environment';
-import { ServiceEndpoint, ServiceState, updateServiceLocation } from 'src/app/core/service';
+import { ServiceEndpoint, ServiceState, clearClientErrors, selectClientError, updateServiceLocation } from 'src/app/core/service';
 import { TokenResponse } from 'angular-oauth2-oidc';
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +18,19 @@ export class OIDCFacade {
     private readonly authorizationService : OIDCAuthorizationService,
     private readonly authenticationService : OIDCAuthenticationService,
     ) {
+      serviceStore.select(selectClientError).subscribe(errors => {
+        if (errors.length > 0)
+        {
+          let error = errors[0];
+          if (error.status == 401)
+          {
+            // handle the error -> removing from list
+            serviceStore.dispatch(clearClientErrors());
+            // unauthorized could mean access token is invalid
+            this.clearAccessToken();
+          }
+        }
+      });
   }
   loadIdentityProviders() {
     this.serviceStore.dispatch(updateServiceLocation(
@@ -39,6 +52,7 @@ export class OIDCFacade {
       });
     }
   }
+
   getAccessTokenWithRefreshToken(p : OIDCProvider, refreshToken : String) : Promise<void> {
     return this.authorizationService.getAccessTokenWithRefreshToken(p, refreshToken).then(this.storeTokens);
   }
@@ -90,11 +104,14 @@ export class OIDCFacade {
         })
         .join('')
     );
-}
+  }
 
-private base64UrlEncode(str:string): string {
-  const base64 = btoa(str);
-  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
+  public clearAccessToken():void {
+    // access token will stored
+    this.store.dispatch(setAccessToken({
+      token : '',
+      expires_in: 0
+    }));
+  }
 
 }
