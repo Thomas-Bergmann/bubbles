@@ -6,15 +6,17 @@
       (selectHuman)="onSelectHuman($event)">
     ></listHumans>
   </div>
-  <div class="header" *ngIf="selectedHuman">Edit Human</div>
-  <div class="editHuman" *ngIf="selectedHuman">
+</div>
+<div class="outerbox" *ngIf="selectedHuman">
+  <div class="header">Edit Human</div>
+  <div class="editHuman">
     <editHuman
       [human]="selectedHuman"
       (updateHuman)="_onUpdateHuman($event)">
     ></editHuman>
   </div>
-  <div class="header" *ngIf="selectedHuman">Delete Human</div>
-  <div class="deleteHuman" *ngIf="selectedHuman">
+  <div class="header">Delete Human</div>
+  <div class="deleteHuman">
     <input type="submit" value="delete" (click)="_deleteSelectedHuman()" />
   </div>
 </div>

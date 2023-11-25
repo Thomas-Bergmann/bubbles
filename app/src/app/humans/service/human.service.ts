@@ -10,6 +10,7 @@ interface HumanDataRO {
   userRef : string;
   dateOfBirth? : string;
   dateOfDeath? : string;
+  gender? : string;
 }
 
 interface HumanInfoRO {
@@ -20,6 +21,7 @@ interface HumanUpdateRO {
   name? : string;
   dateOfBirth? : string;
   dateOfDeath? : string;
+  gender? : string;
 }
 
 interface HumanRO {
@@ -66,5 +68,5 @@ export class HumanService {
 
 function convertHumanRO(ro : HumanRO): Human
 {
-  return new Human().loaded(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath, ro.info.age);
+  return new Human().loaded(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath, ro.info.age, ro.data.gender);
 }

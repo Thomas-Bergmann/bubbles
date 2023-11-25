@@ -1,8 +1,25 @@
-<div class="flex">
+<form class="flex">
     <div class="box">
         <input type="text" name="name" placeholder="name of human" [(ngModel)]="nameField" />
-        <br /><input type="text" name="dateOfBirth" placeholder="yyyy/mm/dd" [(ngModel)]="birthField" />
-        <br /><input type="text" name="dateOfDeath" placeholder="yyyy/mm/dd" [(ngModel)]="deathField" />
-        <br /><input type="submit" value="update" (click)="_updateHuman()" />
     </div>
-</div>
+    <div class="box">
+        <input type="text" name="dateOfBirth" placeholder="yyyy/mm/dd" [(ngModel)]="birthField" />
+    </div>
+    <div class="box">
+        <input type="text" name="dateOfDeath" placeholder="yyyy/mm/dd" [(ngModel)]="deathField" />
+    </div>
+    <div class="box">
+        <mat-form-field>
+                <mat-label>Select an option</mat-label>
+                <mat-select [(ngModel)]="genderField">
+                  <mat-option>None</mat-option>
+                  <mat-option value="FEMALE">female</mat-option>
+                  <mat-option value="MALE">male</mat-option>
+                  <mat-option value="DIVERSE">diverse</mat-option>
+                </mat-select>
+              </mat-form-field>
+    </div>
+    <div class="box">
+        <input type="submit" value="update" (click)="_updateHuman()" />
+    </div>
+</form>

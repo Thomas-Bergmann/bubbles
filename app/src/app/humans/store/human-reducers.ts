@@ -35,7 +35,6 @@ function _updateHumansAtState(state:HumanState, newHumans: ReadonlyMap<string, H
 
 function _setHuman(humans:ReadonlyMap<string, Human>,  human:Human):ReadonlyMap<string, Human>
 {
-  console.log("update human at store", human);
   let newHumans : Map<string, Human> = new Map();
   humans?.forEach((v,k) => newHumans.set(k,v));
   newHumans.set(human.resourceURI, human);

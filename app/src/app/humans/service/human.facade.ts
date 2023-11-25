@@ -54,7 +54,7 @@ export class HumanFacade {
   }
   updateHuman(human: Human) {
     this.store.dispatch(addHuman({ human : human}));
-    this.service.updateHuman(human.localRef, { name : human.name, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath })
+    this.service.updateHuman(human.localRef, { name : human.name, dateOfBirth: human.dateOfBirth, dateOfDeath: human.dateOfDeath, gender: human.gender })
       .subscribe(() => this.getHuman(human.localRef));
   }
   deleteHuman(human: Human) {

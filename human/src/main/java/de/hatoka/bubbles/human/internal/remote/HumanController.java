@@ -72,6 +72,7 @@ public class HumanController
         HumanBO human = humanRepository.createHuman(humanRef, input.getName(), userRef);
         human.setDateOfBirth(input.getDateOfBirth());
         human.setDateOfDeath(input.getDateOfDeath());
+        human.setGender(input.getGender());
     }
 
     @PatchMapping(value = PATH_SUB_HUMAN, consumes = { APPLICATION_JSON_VALUE })
@@ -92,6 +93,10 @@ public class HumanController
         if (input.getDateOfDeath() != null)
         {
             human.setDateOfDeath(input.getDateOfDeath());
+        }
+        if (input.getGender() != null)
+        {
+            human.setGender(input.getGender());
         }
     }
 

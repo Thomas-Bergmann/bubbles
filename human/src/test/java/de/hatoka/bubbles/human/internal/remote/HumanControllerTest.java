@@ -24,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import de.hatoka.bubbles.human.capi.business.Gender;
 import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.capi.remote.HumanCreateRO;
@@ -66,6 +67,7 @@ public class HumanControllerTest
         data.setUserRef(USER_REF_ONE.getLocalRef());
         data.setDateOfBirth(DATE_OF_BIRTH);
         data.setDateOfDeath(DATE_OF_DEATH);
+        data.setGender(Gender.DIVERSE);
         putHuman(HUMAN_REF1, data);
 
         HumanRO ro = getHuman(HUMAN_REF1);
@@ -74,16 +76,20 @@ public class HumanControllerTest
         assertEquals("name-1", ro.getData().getName());
         assertEquals(DATE_OF_BIRTH, ro.getData().getDateOfBirth());
         assertEquals(DATE_OF_DEATH, ro.getData().getDateOfDeath());
+        assertEquals(Gender.DIVERSE, ro.getData().getGender());
+
         assertNotNull(ro.getInfo(), "human contains info");
         assertEquals(12, ro.getInfo().getAge());
         
         data.setDateOfDeath(DATE_OF_DEATH_COMPLETE);
+        data.setGender(Gender.FEMALE);
         patchHuman(HUMAN_REF1, data);
 
         HumanRO afterUpdate = getHuman(HUMAN_REF1);
         assertNotNull(afterUpdate, "human created and found");
         assertNotNull(afterUpdate.getData(), "human contains data");
         assertEquals(DATE_OF_DEATH_COMPLETE, afterUpdate.getData().getDateOfDeath());
+        assertEquals(Gender.FEMALE, afterUpdate.getData().getGender());
 
         deleteHuman(HUMAN_REF1);
     }

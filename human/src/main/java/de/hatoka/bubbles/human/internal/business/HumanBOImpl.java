@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import de.hatoka.bubbles.human.capi.business.Gender;
 import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.internal.persistence.HumanDao;
@@ -112,5 +113,19 @@ public class HumanBOImpl implements HumanBO
     public IncompleteDate getDateOfDeath()
     {
         return IncompleteDate.valueOf(getPO().getDateOfDeath());
+    }
+
+    @Override
+    public void setGender(Gender gender)
+    {
+        HumanPO po = getPO();
+        po.setGender(gender);
+        savePO(po);
+    }
+
+    @Override
+    public Gender getGender()
+    {
+        return getPO().getGender();
     }
 }
