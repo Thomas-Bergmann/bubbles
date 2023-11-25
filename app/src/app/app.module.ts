@@ -36,7 +36,7 @@ import { CompositeRoutingModule } from './composites/routing';
     CompositeRoutingModule,
     AppRoutingModule,
     StoreDevtoolsModule.instrument({
-      name: 'HATOKA bubbles',
+      name: 'Bubbles',
       maxAge: 50,
       logOnly: environment.production
     }),

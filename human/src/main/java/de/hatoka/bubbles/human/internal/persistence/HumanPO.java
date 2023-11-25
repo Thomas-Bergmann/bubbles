@@ -3,8 +3,11 @@ package de.hatoka.bubbles.human.internal.persistence;
 import java.io.Serializable;
 import java.util.Objects;
 
+import de.hatoka.bubbles.human.capi.business.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,6 +53,9 @@ public class HumanPO implements Serializable
     private String dateOfBirth;
     @Column(name = "date_of_death", nullable = true)
     private String dateOfDeath;
+    @Column(name = "gender", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public HumanPO()
     {
@@ -124,5 +130,15 @@ public class HumanPO implements Serializable
     public void setDateOfDeath(String dateOfDeath)
     {
         this.dateOfDeath = dateOfDeath;
+    }
+
+    public Gender getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(Gender gender)
+    {
+        this.gender = gender;
     }
 }

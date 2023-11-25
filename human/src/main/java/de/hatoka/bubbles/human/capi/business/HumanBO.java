@@ -35,6 +35,10 @@ public interface HumanBO
 
     void setDateOfBirth(IncompleteDate dateOfBirth);
     IncompleteDate getDateOfBirth();
+    
     void setDateOfDeath(IncompleteDate dateOfDeath);
     IncompleteDate getDateOfDeath();
+    
+    void setGender(Gender gender);
+    Gender getGender();
 }

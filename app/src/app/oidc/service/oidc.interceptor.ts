@@ -21,14 +21,14 @@ export class OIDCInterceptor implements HttpInterceptor {
       if (t !== undefined)
       {
         this.access_token = t;
-        // console.log("access token received", this.access_token);
+        console.log("interceptor access token received", this.access_token);
       }
     });
     this.store.select(selectRefreshToken).subscribe( t => {
       if (t !== undefined)
       {
         this.refresh_token = t;
-        // console.log("refresh token received", this.refresh_token);
+        console.log("interceptor refresh token received", this.refresh_token);
       }
     });
     this.store.select(selectCurrentProvider).subscribe( p => {

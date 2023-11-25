@@ -23,6 +23,7 @@ public class HumanBO2RO
         data.setUserRef(human.getUserRef().getGlobalRef());
         data.setDateOfBirth(human.getDateOfBirth());
         data.setDateOfDeath(human.getDateOfDeath());
+        data.setGender(human.getGender());
 
         HumanInfoRO info = new HumanInfoRO();
         info.setAge(IncompleteDate.between(human.getDateOfBirth(), human.getDateOfDeath()).map(Period::getYears).orElse(null));

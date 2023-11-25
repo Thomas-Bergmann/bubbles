@@ -10,14 +10,18 @@ interface HumanDataRO {
   userRef : string;
   dateOfBirth? : string;
   dateOfDeath? : string;
+  gender? : string;
 }
 
 interface HumanInfoRO {
   age? : number;
 }
 
-interface HumanCreateRO extends HumanDataRO {
-  userRef : string;
+interface HumanUpdateRO {
+  name? : string;
+  dateOfBirth? : string;
+  dateOfDeath? : string;
+  gender? : string;
 }
 
 interface HumanRO {
@@ -43,11 +47,15 @@ export class HumanService {
       .get<HumanRO>(`/humans/${externalID}`)
       .pipe(map(convertHumanRO));
   }
-  addHuman(externalID: string, data : HumanCreateRO): Observable<{}> {
+  addHuman(externalID: string, data : HumanDataRO): Observable<{}> {
     return this.apiService
       .put(`/humans/${externalID}`, data);
   }
 
+  updateHuman(externalID: string, data : HumanUpdateRO): Observable<{}> {
+    return this.apiService
+      .patch(`/humans/${externalID}`, data);
+  }
   deleteHuman(human : Human): Observable<{}> {
     return this.apiService.delete(human.resourceURI);
   }
@@ -60,5 +68,5 @@ export class HumanService {
 
 function convertHumanRO(ro : HumanRO): Human
 {
-  return new Human().loaded(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath, ro.info.age);
+  return new Human().loaded(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath, ro.info.age, ro.data.gender);
 }

@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class ListHumansViewComponent implements OnInit  {
-  allHumans$: Observable<ReadonlyMap<string, Human>>;
+  allHumans$: Observable<Human[]>;
   humans: readonly Human[] = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
 

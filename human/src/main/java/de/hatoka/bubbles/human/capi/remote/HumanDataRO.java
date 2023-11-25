@@ -1,27 +1,26 @@
 package de.hatoka.bubbles.human.capi.remote;
 
-import jakarta.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.hatoka.bubbles.human.capi.business.Gender;
 import de.hatoka.common.capi.value.IncompleteDate;
+import jakarta.validation.constraints.NotNull;
 
 public class HumanDataRO
 {
     @JsonProperty("name")
     @NotNull
     private String name;
-
     @JsonProperty("userRef")
     @NotNull
     private String userRef;
-
     @JsonProperty("dateOfBirth")
     private String dateOfBirth;
-    
     @JsonProperty("dateOfDeath")
     private String dateOfDeath;
+    @JsonProperty("gender")
+    private String gender;
 
     public String getName()
     {
@@ -65,5 +64,17 @@ public class HumanDataRO
     public void setDateOfDeath(IncompleteDate dateOfDeath)
     {
         this.dateOfDeath = dateOfDeath.toString();
+    }
+
+    @JsonIgnore
+    public Gender getGender()
+    {
+        return this.gender == null? null : Gender.valueOf(this.gender);
+    }
+
+    @JsonIgnore
+    public void setGender(Gender gender)
+    {
+        this.gender = gender == null ? null : gender.name();
     }
 }

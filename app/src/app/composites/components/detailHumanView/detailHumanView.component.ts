@@ -12,8 +12,8 @@ import { HumanFacade, HumanState, Human, selectAllHumans } from 'src/app/humans'
 })
 
 export class DetailHumanViewComponent implements OnInit  {
-  allHumans$: Observable<ReadonlyMap<string, Human>>;
-  humans: readonly Human[] | undefined;
+  allHumans$: Observable<Human[]>;
+  humans: readonly Human[]  = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
 
   routeHuman? : string;
@@ -34,8 +34,12 @@ export class DetailHumanViewComponent implements OnInit  {
   ngOnInit(): void {
     this.unsubscribeOnDestroy.push(this.route.params.subscribe(params => {
       // console.log("route", params);
-      this.routeHuman = params['human'];
+      this.routeHuman = params['human'].replace('%20', ' ');
       this.selectedHuman = undefined;
+      this.sureThatEveryThingIsLoaded();
+    }));
+    this.unsubscribeOnDestroy.push(this.allHumans$.subscribe(humans => {
+      this.humans = humans;
       this.sureThatEveryThingIsLoaded();
     }));
   }
@@ -44,7 +48,7 @@ export class DetailHumanViewComponent implements OnInit  {
   }
 
   public onSelectHuman(p: Human): void {
-    this.router.navigate([p.name], { relativeTo: this.route.parent?.parent });
+    this.router.navigate([p.localRef], { relativeTo: this.route.parent?.parent });
   }
   
   private sureThatEveryThingIsLoaded() {
@@ -52,9 +56,9 @@ export class DetailHumanViewComponent implements OnInit  {
   }
 
   private makeSureHumanIsLoaded() {
-    if (this.humans === undefined)
+    if (this.humans.length == 0)
     {
-      // this.humanFacade.loadHumans();
+      this.humanFacade.loadHumans();
       return;
     }
     this.humans
@@ -65,5 +69,14 @@ export class DetailHumanViewComponent implements OnInit  {
           this.sureThatEveryThingIsLoaded();
         }
     });
+  }
+  _onUpdateHuman(human:Human) {
+    this.humanFacade.updateHuman(human);
+  }
+  _deleteSelectedHuman() {
+    if (this.selectedHuman !== undefined)
+    {
+      this.humanFacade.deleteHuman(this.selectedHuman);
+    }
   }
 }
