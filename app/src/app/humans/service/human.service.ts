@@ -8,8 +8,12 @@ import { ApiService } from 'src/app/core/service';
 interface HumanDataRO {
   name : string;
   userRef : string;
-  dateOfBirth : string;
-  dateOfDeath : string;
+  dateOfBirth? : string;
+  dateOfDeath? : string;
+}
+
+interface HumanInfoRO {
+  age? : number;
 }
 
 interface HumanCreateRO extends HumanDataRO {
@@ -21,6 +25,7 @@ interface HumanRO {
   refGlobal : string;
   resourceURI: string;
   data : HumanDataRO;
+  info : HumanInfoRO;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +38,11 @@ export class HumanService {
       .pipe(map(ros => this.convertListHumanRO(ros)));
   }
 
+  getHuman(externalID: string): Observable<Human> {
+    return this.apiService
+      .get<HumanRO>(`/humans/${externalID}`)
+      .pipe(map(convertHumanRO));
+  }
   addHuman(externalID: string, data : HumanCreateRO): Observable<{}> {
     return this.apiService
       .put(`/humans/${externalID}`, data);
@@ -50,5 +60,5 @@ export class HumanService {
 
 function convertHumanRO(ro : HumanRO): Human
 {
-  return new Human().init(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath);
+  return new Human().loaded(ro.resourceURI, ro.refLocal, ro.data.name, ro.data.dateOfBirth, ro.data.dateOfDeath, ro.info.age);
 }
