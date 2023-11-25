@@ -39,6 +39,11 @@ function getInitialState() : OIDCState {
   {
     refreshExpires = Number.parseInt(getStorageItem("token_refresh_expires") || "0");
   }
+  let resources = new Set<string>();
+  if (getStorageItem("token_resources") !== undefined)
+  {
+    getStorageItem("token_resources")?.split('|').forEach(url => resources.add(url));
+  }
   return {
     currentOIDCProvider : getStorageItem("provider") || '',
     currentUser : getStorageItem("user") || '',
@@ -50,7 +55,7 @@ function getInitialState() : OIDCState {
       token : getStorageItem("token_refresh") || '',
       expiresIn : refreshExpires
     },
-    resources : new Set<string>(),
+    resources : resources,
     allOIDCProviders : [],
     route : getStorageItem("route") || undefined
   };
@@ -131,6 +136,7 @@ function _setRefreshToken(state:OIDCState, token:string, expires_in: number):OID
 
 function _addResource(state:OIDCState, newResources:string[]):OIDCState
 {
+  saveStorageItem("token_resources", newResources.join('|'));
   var resources = new Set<string>(state.resources);
   newResources.forEach(r => resources.add(r));
   return ({

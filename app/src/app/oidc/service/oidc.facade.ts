@@ -7,7 +7,11 @@ import { OIDCService } from './oidc.service';
 import { OIDCState, OIDCProvider, addProviders, defineUser, setAccessToken, addResources, setRefreshToken } from 'src/app/oidc/store';
 import { environment } from 'src/environments/environment';
 import { ServiceEndpoint, ServiceState, clearClientErrors, selectClientError, updateServiceLocation } from 'src/app/core/service';
-import { TokenResponse } from 'angular-oauth2-oidc';
+import * as oauth2 from 'angular-oauth2-oidc';
+
+export interface TokenResponse extends oauth2.TokenResponse {
+  refresh_expires_in: number;
+}
 
 @Injectable({ providedIn: 'root' })
 export class OIDCFacade {
@@ -66,7 +70,7 @@ export class OIDCFacade {
     // refresh token will stored
     this.store.dispatch(setRefreshToken({
       token : tokenResponse.refresh_token,
-      expires_in: tokenResponse.expires_in
+      expires_in: tokenResponse.refresh_expires_in
     }));
   }
 

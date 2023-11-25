@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TokenResponse } from 'angular-oauth2-oidc';
 
 import { OIDCProvider } from '../store';
+import { TokenResponse } from './oidc.facade';
 
 /**
  * The authorization service will convert an identity token to an access_token for the resource service
