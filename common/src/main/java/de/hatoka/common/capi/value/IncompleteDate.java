@@ -15,7 +15,7 @@ public class IncompleteDate
     private static final String PLACEHOLDER_DAY = "dd";
     private static final String PLACEHOLDER_MONTH = "mm";
     private static final String PLACEHOLDER_YEARYYYY = "yyyy";
-    private static final IncompleteDate UNKNOWN_DATE = new IncompleteDate(Optional.empty(), Optional.empty(),
+    public static final IncompleteDate UNKNOWN_DATE = new IncompleteDate(Optional.empty(), Optional.empty(),
                     Optional.empty());
 
     /**

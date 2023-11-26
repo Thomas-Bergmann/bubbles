@@ -48,10 +48,10 @@ public class HumanController
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<HumanRO> getbubbles(@QueryParam(QUERY_USER_REF) String userRef)
+    public List<HumanRO> getHumans(@QueryParam(QUERY_USER_REF) String userRef)
     {
-        Collection<HumanBO> bubbles = humanRepository.getHumans(UserRef.localRef(userRef));
-        return humanBO2RO.apply(bubbles);
+        Collection<HumanBO> humans = humanRepository.getHumans(UserRef.localRef(userRef));
+        return humanBO2RO.apply(humans);
     }
 
     @PutMapping(value = PATH_SUB_HUMAN, consumes = { APPLICATION_JSON_VALUE })
