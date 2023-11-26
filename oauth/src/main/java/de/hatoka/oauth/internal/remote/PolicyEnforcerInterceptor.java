@@ -71,7 +71,8 @@ public class PolicyEnforcerInterceptor implements HandlerInterceptor
         {
             return true;
         }
-        response.setStatus(bearer.isPresent() ? HttpStatus.FORBIDDEN.value() : HttpStatus.UNAUTHORIZED.value());
+        // we don't check permissions yet - that's why this must be unauthorized (token doesn't exist or is invalid)
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         logger.trace("Client not allowed to access uri '{}'' with method '{}'", uri.getPath(), request.getMethod());
         return false;
     }

@@ -1,14 +1,9 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { OIDCProvider } from './oidc-models';
-import { addProviders, defineProvider, defineUser, setAccessToken, addResources, rememberRouteBeforeLogin, setRefreshToken, clearAccessToken } from './oidc-actions';
+import { OIDCProvider, Token } from './oidc-models';
+import { addProviders, defineProvider, defineUser, setAccessToken, addResources, rememberRouteBeforeLogin, setRefreshToken } from './oidc-actions';
 
 export const oidcFeatureKey = 'oidcState';
 const storagePrefix = 'oidc_';
-
-export interface Token {
-  token: string; // token content
-  expiresIn: number // token expire time
-}
 
 export interface OIDCState {
   currentOIDCProvider: string; // local ref
@@ -39,6 +34,11 @@ function getInitialState() : OIDCState {
   {
     refreshExpires = Number.parseInt(getStorageItem("token_refresh_expires") || "0");
   }
+  let identityExpires : number = 0;
+  if (getStorageItem("token_id_expires") !== undefined)
+  {
+    identityExpires = Number.parseInt(getStorageItem("token_id_expires") || "0");
+  }
   let resources = new Set<string>();
   if (getStorageItem("token_resources") !== undefined)
   {
@@ -49,11 +49,11 @@ function getInitialState() : OIDCState {
     currentUser : getStorageItem("user") || '',
     accessToken : {
       token : getStorageItem("token_access") || '',
-      expiresIn : accessExpires
+      expires_in : accessExpires
     },
     refreshToken : {
       token : getStorageItem("token_refresh") || '',
-      expiresIn : refreshExpires
+      expires_in : refreshExpires
     },
     resources : resources,
     allOIDCProviders : [],
@@ -67,9 +67,8 @@ const _oidcReducer = createReducer(
   on(addProviders, (state, action) => _addProviders(state, action.providers)),
   on(defineProvider, (state, action) => _defineProvider(state, action.provider)),
   on(defineUser, (state, action) => _defineUser(state, action.user)),
-  on(setAccessToken, (state, action) => _setAccessToken(state, action.token, action.expires_in)),
-  on(clearAccessToken, (state) => _clearAccessToken(state)),
-  on(setRefreshToken, (state, action) => _setRefreshToken(state, action.token, action.expires_in)),
+  on(setAccessToken, (state, action) => _setAccessToken(state, action)),
+  on(setRefreshToken, (state, action) => _setRefreshToken(state, action)),
   on(addResources, (state, action) => _addResource(state, action.resources)),
   on(rememberRouteBeforeLogin, (state, action) => _rememberRouteBeforeLogin(state, action.url)),
 );
@@ -104,33 +103,23 @@ function _defineUser(state:OIDCState, user:string):OIDCState
   });
 }
 
-function _setAccessToken(state:OIDCState, token:string, expires_in: number):OIDCState
+function _setAccessToken(state:OIDCState, token:Token):OIDCState
 {
-  saveStorageItem("token_access", token);
-  saveStorageItem("token_access_expires", expires_in.toString());
-  let accessToken : Token = {token: token, expiresIn: expires_in};
+  saveStorageItem("token_access", token.token);
+  saveStorageItem("token_access_expires", token.expires_in.toString());
   return ({
     ...state,
-    accessToken: accessToken,
+    accessToken: token,
   });
 }
 
-function _clearAccessToken(state:OIDCState):OIDCState
+function _setRefreshToken(state:OIDCState, token:Token):OIDCState
 {
+  saveStorageItem("token_refresh", token.token);
+  saveStorageItem("token_refresh_expires", token.expires_in.toString());
   return ({
     ...state,
-    accessToken: { token : "", expiresIn : 0},
-  });
-}
-
-function _setRefreshToken(state:OIDCState, token:string, expires_in: number):OIDCState
-{
-  saveStorageItem("token_refresh", token);
-  saveStorageItem("token_refresh_expires", expires_in.toString());
-  let refreshToken : Token = {token: token, expiresIn: expires_in};
-  return ({
-    ...state,
-    refreshToken: refreshToken,
+    refreshToken: token,
   });
 }
 

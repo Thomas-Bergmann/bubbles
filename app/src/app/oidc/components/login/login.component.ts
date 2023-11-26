@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
   ) {
     this.identityProviders$ = this.oidcStore.select(selectProviders);
     this.identityProviders$.subscribe(allProviders => {
-      // console.debug("idp loaded", allProviders);
+      console.debug("idp loaded", allProviders);
       if (allProviders.length == 1)
       {
-        this._selectProvider(allProviders[0]);
+        // TODO this._selectProvider(allProviders[0]);
       }
     });
   }

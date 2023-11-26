@@ -1,5 +1,14 @@
-<cardHuman *ngFor="let human of humans"
-  [human]="human"
-  [selectedHuman]="selectedHuman"
-  (click)="select(human)"
-></cardHuman>
+<div class="listHumans" *ngIf="showCard">
+  <cardHuman *ngFor="let human of humans"
+    [human]="human"
+    [selectedHuman]="selectedHuman"
+    (click)="select(human)"
+  ></cardHuman>
+</div>
+<div class="canvasHumans" *ngIf="showCanvas">
+  <canvasHuman *ngFor="let human of humans"
+    [human]="human"
+    [selectedHuman]="selectedHuman"
+    (click)="select(human)"
+  ></canvasHuman>
+</div>

@@ -15,6 +15,8 @@ import * as component from './components';
   declarations: [
     component.AddHumanComponent,
     component.EditHumanComponent,
+    component.DeleteHumanComponent,
+    component.CanvasHumanComponent,
     component.CardHumanComponent,
     component.ListHumansComponent,
   ],
@@ -31,6 +33,7 @@ import * as component from './components';
   exports: [
     component.AddHumanComponent,
     component.EditHumanComponent,
+    component.DeleteHumanComponent,
     component.ListHumansComponent,
   ]
 })

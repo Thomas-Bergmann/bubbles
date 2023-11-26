@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { OIDCProvider } from './oidc-models';
+import { OIDCProvider, Token } from './oidc-models';
 
 export const addProviders = createAction(
   'Add Providers',
@@ -18,22 +18,16 @@ export const defineUser = createAction(
 
 export const setAccessToken = createAction(
   'Set Access Token',
-  props<{ token: string, expires_in: number }>()
+  props<Token>()
 );
 export const setRefreshToken = createAction(
   'Set Refresh Token',
-  props<{ token: string, expires_in: number }>()
+  props<Token>()
 );
-
-export const clearAccessToken = createAction(
-  'Clear Access Token',
-);
-
 export const addResources = createAction(
   'Add Resources',
   props<{ resources: string[] }>()
 );
-
 export const rememberRouteBeforeLogin = createAction(
   'Remember Route Before Login',
   props<{ url: string }>()

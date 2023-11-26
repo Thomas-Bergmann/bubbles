@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpEvent, HttpEventType, HttpHandler, HttpHeaderResponse, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { OIDCState, Token } from '../store/oidc-reducers';
+import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { OIDCState } from '../store/oidc-reducers';
 import { Store } from '@ngrx/store';
-import { OIDCProvider, clearAccessToken, selectAccessToken, selectCurrentProvider, selectRefreshToken, selectResources } from '../store';
+import { Token, selectAccessToken, selectResources } from '../store';
 import { OIDCFacade } from './oidc.facade';
 
 @Injectable({ providedIn: 'root' })
 export class OIDCInterceptor implements HttpInterceptor {
   access_token : Token | undefined = undefined;
-  refresh_token : Token | undefined = undefined;
-  get_refesh_trigger : boolean = false;
-  oidc_provider : OIDCProvider | undefined = undefined;
+
   uri_prefixes : Set<string> = new Set<string>();
   constructor(
     private readonly store: Store<OIDCState>,
@@ -21,20 +19,11 @@ export class OIDCInterceptor implements HttpInterceptor {
       if (t !== undefined)
       {
         this.access_token = t;
-        console.log("interceptor access token received", this.access_token);
-      }
-    });
-    this.store.select(selectRefreshToken).subscribe( t => {
-      if (t !== undefined)
-      {
-        this.refresh_token = t;
-        console.log("interceptor refresh token received", this.refresh_token);
-      }
-    });
-    this.store.select(selectCurrentProvider).subscribe( p => {
-      if (p !== undefined)
-      {
-        this.oidc_provider = p;
+        console.log("interceptor access token received", this.access_token, new Date(t.expires_in).toUTCString());
+        if (this.access_token.expires_in < new Date().getTime())
+        {
+          oidcFacade.clearAccessToken();
+        }
       }
     });
     this.store.select(selectResources).subscribe( r => {
@@ -55,16 +44,9 @@ export class OIDCInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     // access token is invalid, but refresh token exists
-    if (!this.isAccessTokenAvailable() && this.oidc_provider != undefined && this.refresh_token?.token != undefined && !this.get_refesh_trigger)
+    if (!this.isAccessTokenAvailable())
     {
-      // avoid handle of this request (endless loop)
-      this.get_refesh_trigger = true;
-      this.oidcFacade.getAccessTokenWithRefreshToken(this.oidc_provider, this.refresh_token.token).then(r => {
-        this.get_refesh_trigger = false;
-      }).catch(e => {
-        // todo user must login again
-        this.get_refesh_trigger = false;
-      });
+      // this.oidcFacade.tryToGetAccessToken();
     }
     if (!this.isAccessTokenAvailable())
     {
@@ -89,8 +71,8 @@ export class OIDCInterceptor implements HttpInterceptor {
           console.log("status", e.type);
           if (e.type === HttpEventType.Response) {
             console.log("status", e.url, e.status);
-            if (e.status == 403) {
-              this.store.dispatch(clearAccessToken());
+            if (e.status == 401 || e.status == 403) {
+              this.oidcFacade.clearAccessToken();
             }
           }
         });
