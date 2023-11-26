@@ -42,3 +42,13 @@ export const EMPTY : OIDCProvider = {
   tokenURI: "",
   authorizationURI: "",
 }
+
+export interface Token {
+  token: string; // token content
+  expires_in: number // token expire time
+}
+
+export const NULL_TOKEN : Token = {
+  token : "",
+  expires_in : 0
+};

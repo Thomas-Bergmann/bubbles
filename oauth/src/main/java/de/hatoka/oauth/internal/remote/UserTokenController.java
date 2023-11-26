@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import de.hatoka.bubbles.bubble.internal.remote.BubbleController;
 import de.hatoka.bubbles.human.internal.remote.HumanController;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
+import de.hatoka.oauth.capi.business.TokenUsage;
 import de.hatoka.oauth.capi.business.TokenUtils;
 import de.hatoka.oauth.capi.remote.OAuthRefreshRO;
 import de.hatoka.oauth.capi.remote.OAuthTokenResponse;
@@ -52,7 +53,7 @@ public class UserTokenController
 
     @PostMapping(value = PATH_SUB_TOKEN, consumes = { APPLICATION_JSON_VALUE })
     @ResponseStatus(HttpStatus.OK)
-    public OAuthTokenResponse generateTokenForUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken, @RequestBody OAuthUserAuthenticationRO input, UriComponentsBuilder uriBuilder)
+    public OAuthTokenResponse generateTokenForUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerTokenHeader, @RequestBody OAuthUserAuthenticationRO input, UriComponentsBuilder uriBuilder)
     {
         Optional<IdentityProviderBO> opt = getIdentityProvider(input.getIdpRef());
         if (!opt.isPresent())
@@ -60,15 +61,27 @@ public class UserTokenController
             errorSupport.throwNotFoundException("idp.notfound", input.getIdpRef());
         }
         IdentityProviderBO idp = opt.get();
-        if (!bearerToken.toLowerCase().startsWith(BEARER_PREFIX))
+        if (!bearerTokenHeader.toLowerCase().startsWith(BEARER_PREFIX))
         {
-            errorSupport.throwNotFoundException("idp.bearer.idtoken.notfound", bearerToken);
+            errorSupport.throwNotFoundException("idp.bearer.notfound", bearerTokenHeader);
         }
-        String idToken = bearerToken.substring(BEARER_PREFIX.length()).trim();
-        OIDCUserInfo userInfo = idp.getUserInfo(idToken);
-        OAuthTokenResponse result = tokenUtils.createTokenForSubject(userInfo.getSubject());
-        result.setScope(getScopes(uriBuilder));
-        applicationEventPublisher.publishEvent(new OIDCUserTokenGeneratedEvent(this, userInfo));
+        String bearerToken = bearerTokenHeader.substring(BEARER_PREFIX.length()).trim();
+        if (TokenUsage.id != input.getType() && TokenUsage.refresh != input.getType())
+        {
+            errorSupport.throwNotFoundException("idp.bearer.usage.notfound", bearerToken);
+        }
+        OAuthTokenResponse result;
+        if (TokenUsage.refresh == input.getType())
+        {
+            result = tokenUtils.createTokenFromRefreshToken(bearerToken);
+        }
+        else
+        {
+            OIDCUserInfo userInfo = idp.getUserInfo(bearerToken);
+            result = tokenUtils.createTokenForSubject(userInfo.getSubject());
+            result.setScope(getScopes(uriBuilder));
+            applicationEventPublisher.publishEvent(new OIDCUserTokenGeneratedEvent(this, userInfo));
+        }
         return result;
     }
 

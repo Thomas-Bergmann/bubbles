@@ -1,5 +1,6 @@
 package de.hatoka.oauth.capi.business;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,10 +30,10 @@ public class TokenUtils
 {
     private static final String TOKEN_TYPE_BEARER = "bearer";
     private static final String CLAIM_TOKEN_META = "token-metadata";
-    // access token validity period in milliseconds (5min)
-    private static final long JWT_ACCESS_TOKEN_VALIDITY = 5 * 60 * 1000;
-    // refresh token validity period in milliseconds (5h)
-    private static final long JWT_REFRESH_TOKEN_VALIDITY = 5 * 60 * 60 * 1000;
+    // access token validity period
+    private static final Duration JWT_ACCESS_TOKEN_VALIDITY = Duration.ofMinutes(10);
+    // refresh token validity period
+    private static final Duration JWT_REFRESH_TOKEN_VALIDITY = Duration.ofMinutes(60);
 
     // extract claim usage from claims
     @SuppressWarnings("unchecked")
@@ -251,7 +252,7 @@ public class TokenUtils
     // 3. According to JWS Compact
     // Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
     // compaction of the JWT to a URL-safe string
-    private String generateToken(TokenMetaData meta, String subject, Map<String, Object> claims, long validity)
+    private String generateToken(TokenMetaData meta, String subject, Map<String, Object> claims, Duration validity)
     {
         long now = getNow();
         Map<String, Object> withMetaClaims = new HashMap<>();
@@ -262,7 +263,7 @@ public class TokenUtils
                    .subject(subject)
                    .notBefore(new Date(now))
                    .issuedAt(new Date(now))
-                   .expiration(new Date(now + validity))
+                   .expiration(new Date(now + validity.toMillis()))
                    .signWith(getKey(), getAlgoritm())
                    .compact();
     }

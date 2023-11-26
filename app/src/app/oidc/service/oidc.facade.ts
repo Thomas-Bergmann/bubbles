@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { OIDCAuthenticationService } from './oidc-authentication';
 import { OIDCAuthorizationService } from './oidc-authorization';
 import { OIDCService } from './oidc.service';
-import { OIDCState, OIDCProvider, addProviders, defineUser, setAccessToken, addResources, setRefreshToken } from 'src/app/oidc/store';
+import { OIDCState, OIDCProvider, addProviders, defineUser, setAccessToken, addResources, setRefreshToken, NULL_TOKEN, selectProviders, selectCurrentProvider, Token, selectRefreshToken, selectAccessToken } from 'src/app/oidc/store';
 import { environment } from 'src/environments/environment';
 import { ServiceEndpoint, ServiceState, clearClientErrors, selectClientError, updateServiceLocation } from 'src/app/core/service';
 import * as oauth2 from 'angular-oauth2-oidc';
@@ -15,6 +15,12 @@ export interface TokenResponse extends oauth2.TokenResponse {
 
 @Injectable({ providedIn: 'root' })
 export class OIDCFacade {
+  allOIDCProviders: OIDCProvider[] = [];
+  oidc_provider: OIDCProvider | undefined = undefined;
+  refresh_token : Token | undefined = undefined;
+  access_token : Token | undefined = undefined;
+  get_refesh_trigger : boolean = false;
+
   constructor(
     private readonly store: Store<OIDCState>,
     private readonly service : OIDCService,
@@ -22,6 +28,38 @@ export class OIDCFacade {
     private readonly authorizationService : OIDCAuthorizationService,
     private readonly authenticationService : OIDCAuthenticationService,
     ) {
+      this.store.select(selectProviders).subscribe(allProviders => {
+        this.allOIDCProviders = allProviders;
+        if (allProviders.length == 0)
+        {
+          console.log("facade oidc providers received");
+          this.tryToGetAccessToken();
+        }
+      });
+      this.store.select(selectCurrentProvider).subscribe( p => {
+        if (p !== undefined)
+        {
+          console.log("facade oidc provider received");
+          this.oidc_provider = p;
+          this.tryToGetAccessToken();
+        }
+      });
+      this.store.select(selectRefreshToken).subscribe( t => {
+        if (t !== undefined)
+        {
+          this.refresh_token = t;
+          console.log("facade refresh token received", this.refresh_token, new Date(t.expires_in).toUTCString());
+          this.tryToGetAccessToken();
+        }
+      });
+      this.store.select(selectAccessToken).subscribe( t => {
+        if (t !== undefined)
+        {
+          this.access_token = t;
+          console.log("facade accesss token received", this.refresh_token, new Date(t.expires_in).toUTCString());
+          this.tryToGetAccessToken();
+        }
+      });
       serviceStore.select(selectClientError).subscribe(errors => {
         if (errors.length > 0)
         {
@@ -31,7 +69,7 @@ export class OIDCFacade {
             // handle the error -> removing from list
             serviceStore.dispatch(clearClientErrors());
             // unauthorized could mean access token is invalid
-            this.clearAccessToken();
+            this.tryToGetAccessToken();
           }
         }
       });
@@ -57,8 +95,30 @@ export class OIDCFacade {
     }
   }
 
-  getAccessTokenWithRefreshToken(p : OIDCProvider, refreshToken : String) : Promise<void> {
-    return this.authorizationService.getAccessTokenWithRefreshToken(p, refreshToken).then(this.storeTokens);
+  private getAccessWithRefreshToken() : void {
+    console.log("facade - try to get access token with refresh token");
+    if (this.oidc_provider !== undefined && this.refresh_token !== undefined && this.refresh_token.expires_in > 0 && !this.get_refesh_trigger)
+    {
+      this.get_refesh_trigger = true;
+      this.authorizationService.getAccessTokenWithRefreshToken(this.oidc_provider, this.refresh_token.token)
+      .then(r => {
+        this.storeTokens(r);
+        this.get_refesh_trigger = false;
+      }).catch(error => {
+        this.get_refesh_trigger = false;
+      });
+    }
+    else {
+      console.log("required data not available to retrieve access token");
+      if (this.oidc_provider !== undefined)
+      {
+        console.log("oidc provider is not defined yet");
+      }
+      if (this.allOIDCProviders.length == 0)
+      {
+        console.log("list of oidc provider not provided yet");
+      }
+    }
   }
 
   private storeTokens(tokenResponse: TokenResponse):void {
@@ -111,11 +171,45 @@ export class OIDCFacade {
   }
 
   public clearAccessToken():void {
-    // access token will stored
-    this.store.dispatch(setAccessToken({
-      token : '',
-      expires_in: 0
-    }));
+    if (this.access_token !== undefined && this.access_token.expires_in != 0 && this.access_token.expires_in < new Date().getTime())
+    {
+      console.log("clear access token", new Date(this.access_token.expires_in).toUTCString());
+      this.access_token = undefined;
+      this.store.dispatch(setAccessToken(NULL_TOKEN));
+      this.tryToGetAccessToken();
+    }
+  }
+  public clearRefreshToken():void {
+    console.log("clear refresh token");
+    this.store.dispatch(setRefreshToken(NULL_TOKEN));
   }
 
+
+  public tryToGetAccessToken(): void
+  {
+    if (this.allOIDCProviders.length == 0)
+    {
+      this.loadIdentityProviders();
+      return;
+    }
+    if (this.oidc_provider === undefined)
+    {
+      console.log("oidc provider still undefined");
+      return;
+    }
+    let now = new Date();
+    console.log("now", now.toUTCString());
+    if (this.access_token !== undefined && this.access_token.expires_in != 0 && this.access_token.expires_in < now.getTime())
+    {
+      this.clearAccessToken();
+    }
+    if (this.refresh_token !== undefined && this.refresh_token.expires_in != 0 && this.refresh_token.expires_in < now.getTime())
+    {
+      this.clearRefreshToken();
+    }
+    if ((this.access_token === undefined || this.access_token?.expires_in == 0) && (this.refresh_token !== undefined && this.refresh_token?.expires_in > 0))
+    {
+      this.getAccessWithRefreshToken();
+    }
+  }
 }
