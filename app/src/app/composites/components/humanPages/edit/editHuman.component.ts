@@ -1,22 +1,20 @@
 import { Component, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Unsubscribable } from 'rxjs';
+import { Unsubscribable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { HumanFacade, HumanState, Human, selectAllHumans, listHumansComponentOptionCanvas } from 'src/app/humans';
+import { HumanFacade, HumanState, Human, selectAllHumans } from 'src/app/humans';
 
 @Component({
-  templateUrl: './detailHuman.component.html',
-  styleUrls: ['./detailHuman.component.sass']
+  templateUrl: './editHuman.component.html',
+  styleUrls: ['./editHuman.component.sass']
 })
 
-export class DetailHumanPage implements OnInit  {
-  allHumans$: Observable<Human[]>;
+export class EditHumanPage implements OnInit  {
   humans: readonly Human[]  = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
   routeHuman? : string;
   selectedHuman? : Human;
-  displayOption = listHumansComponentOptionCanvas;
 
   constructor(
     private readonly humanStore: Store<HumanState>,
@@ -24,7 +22,6 @@ export class DetailHumanPage implements OnInit  {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {
-    this.allHumans$ = this.humanStore.select(selectAllHumans);
   }
   ngOnChanges() : void {
     this.selectedHuman = undefined;
@@ -37,7 +34,7 @@ export class DetailHumanPage implements OnInit  {
       this.selectedHuman = undefined;
       this.sureThatEveryThingIsLoaded();
     }));
-    this.unsubscribeOnDestroy.push(this.allHumans$.subscribe(humans => {
+    this.unsubscribeOnDestroy.push(this.humanStore.select(selectAllHumans).subscribe(humans => {
       this.humans = humans;
       this.sureThatEveryThingIsLoaded();
     }));
@@ -69,11 +66,11 @@ export class DetailHumanPage implements OnInit  {
         }
     });
   }
-  _onEdit(human:Human) {
-    this.router.navigate(["edit"], { relativeTo: this.route });
+  _onUpdateHuman(human:Human) {
+    this.humanFacade.updateHuman(human);
   }
-  _onRelations(human:Human) {
-    this.router.navigate(["relations"], { relativeTo: this.route });
+  _onDeleteHuman(human:Human) {
+    this.humanFacade.deleteHuman(human);
   }
   _onBack(human:Human) {
     this.router.navigate([human.localRef], { relativeTo: this.route.parent?.parent });

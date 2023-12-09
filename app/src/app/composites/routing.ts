@@ -26,6 +26,8 @@ const routes: Routes = [
     { path: ':human', pathMatch: 'prefix',
       children: [
         { path: '',          pathMatch: 'full', component: composites.DetailHumanPage },
+        { path: 'edit',      pathMatch: 'full', component: composites.EditHumanPage },
+        { path: 'relations', pathMatch: 'full', component: composites.RelationsHumanPage },
       ]
     }
   ]

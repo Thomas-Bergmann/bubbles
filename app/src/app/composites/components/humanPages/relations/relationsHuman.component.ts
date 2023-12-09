@@ -69,4 +69,7 @@ export class RelationsHumanPage implements OnInit  {
         }
     });
   }
+  _onBack(human:Human) {
+    this.router.navigate([human.localRef], { relativeTo: this.route.parent?.parent });
+  }
 }

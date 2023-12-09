@@ -5,7 +5,7 @@
   </div>
 </div>
 <div class="outerbox" *ngIf="selectedHuman">
-  <div class="header">Releations of {{ selectedHuman?.name }}</div>
+  <div class="header" (click)="_onBack(selectedHuman)">Releations of {{ selectedHuman.name }}</div>
   <div class="addReleations">
     add releations
   </div>

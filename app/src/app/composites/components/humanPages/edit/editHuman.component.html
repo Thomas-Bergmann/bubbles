@@ -1,0 +1,16 @@
+<div class="outerbox" *ngIf="selectedHuman">
+  <div class="header" (click)="_onBack(selectedHuman)">Details of {{ selectedHuman.name }}</div>
+  <div class="editHuman">
+    <editHuman
+      [human]="selectedHuman"
+      (updateHuman)="_onUpdateHuman($event)"
+    ></editHuman>
+  </div>
+  <div class="header">Delete Human</div>
+  <div class="deleteHuman">
+    <deleteHuman
+      [human]="selectedHuman"
+      (deleteHuman)="_onDeleteHuman($event)"
+    ></deleteHuman>
+  </div>
+</div>

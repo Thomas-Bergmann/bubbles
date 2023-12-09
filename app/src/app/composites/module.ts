@@ -15,6 +15,8 @@ import { HumanModule } from '../humans';
     composites.DetailBubblePage,
     composites.ListHumansPage,
     composites.DetailHumanPage,
+    composites.EditHumanPage,
+    composites.RelationsHumanPage,
   ],
   imports: [
     CommonModule,

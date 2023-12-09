@@ -9,18 +9,7 @@
   </div>
 </div>
 <div class="outerbox" *ngIf="selectedHuman">
-  <div class="header">Edit Human</div>
-  <div class="editHuman">
-    <editHuman
-      [human]="selectedHuman"
-      (updateHuman)="_onUpdateHuman($event)"
-    ></editHuman>
-  </div>
-  <div class="header">Delete Human</div>
-  <div class="deleteHuman">
-    <deleteHuman
-      [human]="selectedHuman"
-      (deleteHuman)="_onDeleteHuman($event)"
-    ></deleteHuman>
-  </div>
+  <div class="header">Select Sub Page</div>
+  <div class="subpage" (click)="_onEdit(selectedHuman)">EDIT</div>
+  <div class="subpage" (click)="_onRelations(selectedHuman)">RELATIONS</div>
 </div>
