@@ -11,10 +11,10 @@ import { HumanModule } from '../humans';
 
 @NgModule({
   declarations: [
-    composites.ListBubblesViewComponent,
-    composites.DetailBubbleViewComponent,
-    composites.ListHumansViewComponent,
-    composites.DetailHumanViewComponent,
+    composites.ListBubblesPage,
+    composites.DetailBubblePage,
+    composites.ListHumansPage,
+    composites.DetailHumanPage,
   ],
   imports: [
     CommonModule,

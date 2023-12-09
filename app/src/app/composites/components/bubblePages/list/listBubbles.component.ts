@@ -6,12 +6,11 @@ import { BubbleFacade, BubbleState, Bubble, selectAllBubbles } from 'src/app/bub
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'listBubblesView',
-  templateUrl: './listBubblesView.component.html',
-  styleUrls: ['./listBubblesView.component.sass']
+  templateUrl: './listBubbles.component.html',
+  styleUrls: ['./listBubbles.component.sass']
 })
 
-export class ListBubblesViewComponent implements OnInit  {
+export class ListBubblesPage implements OnInit  {
   allBubbles$: Observable<ReadonlyMap<string, Bubble>>;
   bubbles: readonly Bubble[] = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];

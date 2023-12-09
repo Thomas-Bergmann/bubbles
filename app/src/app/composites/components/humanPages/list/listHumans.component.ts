@@ -6,12 +6,11 @@ import { HumanFacade, HumanState, Human, selectAllHumans, listHumansComponentOpt
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'listHumansView',
-  templateUrl: './listHumansView.component.html',
-  styleUrls: ['./listHumansView.component.sass']
+  templateUrl: './listHumans.component.html',
+  styleUrls: ['./listHumans.component.sass']
 })
 
-export class ListHumansViewComponent implements OnInit  {
+export class ListHumansPage implements OnInit  {
   allHumans$: Observable<Human[]>;
   humans: readonly Human[] = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
@@ -29,6 +28,7 @@ export class ListHumansViewComponent implements OnInit  {
     this.humanFacade.loadHumans();
     this.allHumans$.subscribe(allHumans => {
       this.humans = Array.from(allHumans?.values());
+      console.log(this.humans);
     }); 
   }
   ngOnDestroy() {
