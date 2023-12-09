@@ -10,34 +10,26 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import * as store from './store';
 import * as service from './service';
 import * as component from './components';
+import { HumanModule } from '../humans';
 
 @NgModule({
   declarations: [
-    component.AddHumanComponent,
-    component.EditHumanComponent,
-    component.DeleteHumanComponent,
-    component.CanvasHumanComponent,
-    component.CardHumanComponent,
-    component.ListHumansComponent,
+    component.AddFixRelationComponent,
   ],
   imports: [
     CommonModule,
     FormsModule, ReactiveFormsModule, HttpClientModule,
     MatFormFieldModule, MatSelectModule, MatInputModule,
-    StoreModule.forFeature(store.humanFeatureKey, store.humanReducer),
+    StoreModule.forFeature(store.relationFeatureKey, store.relationReducer),
+    HumanModule,
   ],
   providers: [
-    service.HumanFacade,
-    service.HumanService,
+    service.RelationFacade,
+    service.RelationService,
   ],
   exports: [
-    component.AddHumanComponent,
-    component.EditHumanComponent,
-    component.DeleteHumanComponent,
-    component.CanvasHumanComponent,
-    component.CardHumanComponent,
-    component.ListHumansComponent,
+    component.AddFixRelationComponent,
   ]
 })
 
-export class HumanModule {}
+export class RelationsModule {}

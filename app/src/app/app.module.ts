@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import * as bubbles from './bubbles';
 import * as humans from './humans';
+import * as relations from './relations';
 import * as oidc from './oidc';
 import * as core from './core/service/store';
 import { CompositeRoutingModule } from './composites/routing';
@@ -25,12 +26,13 @@ import { CompositeRoutingModule } from './composites/routing';
     FormsModule, ReactiveFormsModule, HttpClientModule,
     OAuthModule.forRoot(),
     StoreModule.forRoot({
-      bubblesState: bubbles.bubbleReducer,
       oidcState : oidc.oidcReducer,
       serviceState : core.serviceReducer,
+      relationsState: relations.relationReducer,
     }),
     bubbles.BubbleModule,
     humans.HumanModule,
+    relations.RelationsModule,
     oidc.OIDCModule,
     core.ServiceModule,
     CompositeRoutingModule,
