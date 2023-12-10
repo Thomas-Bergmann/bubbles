@@ -25,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import de.hatoka.bubbles.human.capi.business.Gender;
+import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.capi.remote.HumanCreateRO;
@@ -104,10 +105,39 @@ public class HumanControllerTest
         data.setName(HUMAN_REF2.getExternalID());
         putHuman(HUMAN_REF2, data);
 
-        List<HumanRO> bubbles = getList(USER_REF_ONE);
-        assertEquals(2, bubbles.size());
+        List<HumanRO> humans = getList(USER_REF_ONE);
+        assertEquals(2, humans.size());
         deleteHuman(HUMAN_REF1);
         deleteHuman(HUMAN_REF2);
+    }
+
+    @Test
+    public void testGetParents()
+    {
+        HumanCreateRO data = new HumanCreateRO();
+        data.setUserRef(USER_REF_ONE.getLocalRef());
+        data.setName(HUMAN_REF1.getExternalID());
+        putHuman(HUMAN_REF1, data);
+        data.setName(HUMAN_REF2.getExternalID());
+        putHuman(HUMAN_REF2, data);
+        // before having a child
+        assertEquals(0, getParents(HUMAN_REF2).size());
+        // make a child
+        HumanBO dad = repository.getHuman(HUMAN_REF1);
+        HumanBO child = repository.getHuman(HUMAN_REF2);
+        dad.addChild(child);
+        // test the child query
+        List<HumanRO> parents = getParents(HUMAN_REF2);
+        assertEquals(1, parents.size());
+        assertEquals(HUMAN_REF1.getGlobalRef(), parents.get(0).getRefGlobal());
+        deleteHuman(HUMAN_REF1);
+        deleteHuman(HUMAN_REF2);
+    }
+
+    private List<HumanRO> getParents(HumanRef childRef)
+    {
+        String uri = HumanController.PATH_ROOT + "?" + HumanController.QUERY_CHILD_REF + "=" + childRef.getLocalRef();
+        return Arrays.asList(this.restTemplate.getForObject(uri, HumanRO[].class));
     }
 
     private List<HumanRO> getList(UserRef userRef)

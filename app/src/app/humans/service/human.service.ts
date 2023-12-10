@@ -44,7 +44,7 @@ export class HumanService {
 
   getParents(childLocalRef:string): Observable<Human[]> {
     return this.apiService
-      .get<HumanRO[]>(`/humans?child=${childLocalRef}`)
+      .get<HumanRO[]>(`/humans?childRef=${childLocalRef}`)
       .pipe(map(ros => this.convertListHumanRO(ros)));
   }
 

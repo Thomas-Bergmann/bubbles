@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 
 import { Human } from 'src/app/humans/store/human-models';
 @Component({
@@ -6,7 +6,7 @@ import { Human } from 'src/app/humans/store/human-models';
   templateUrl: './canvasHuman.component.html',
   styleUrls: ['./canvasHuman.component.sass']
 })
-export class CanvasHumanComponent implements AfterViewInit {
+export class CanvasHumanComponent implements AfterViewInit, OnChanges {
   @Input() human!: Human;
   @Input() selectedHuman?: Human;
   @ViewChild('human') canvas: ElementRef = {} as ElementRef;
@@ -15,16 +15,23 @@ export class CanvasHumanComponent implements AfterViewInit {
   centerPosX = 80;
   centerPosY = 50;
   radius = 10;
-
+  ngOnChanges(changes: SimpleChanges): void {
+      this.ngAfterViewInit();
+  }
   ngAfterViewInit(): void {
     this.context = this.canvas.nativeElement.getContext('2d');
     if (this.context !== undefined)
     {
+      this.context.stroke();
+      this.context.fillStyle = "white"
+      this.context.fillRect(0,0, this.centerPosX*2, this.centerPosY*2);
+      this.context.stroke();
       this.strokeHuman(this.context);
     }
   }
   private strokeHuman(context: CanvasRenderingContext2D) : void
   {
+    context.fillStyle = "black"
     this.strokeGenderSymbol(context);
     this.strokeDeathAtSymbol(context);
     this.strokeAge(context);
@@ -36,6 +43,7 @@ export class CanvasHumanComponent implements AfterViewInit {
     if (this.human.gender == "MALE")
     {
       context.strokeRect(this.centerPosX-this.radius,this.centerPosY-this.radius,this.radius * 2,this.radius * 2);
+      context.stroke();
     }
     if (this.human.gender == "FEMALE")
     {

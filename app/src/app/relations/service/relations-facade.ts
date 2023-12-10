@@ -7,6 +7,7 @@ import { Human, HumanFacade} from 'src/app/humans';
 
 @Injectable({ providedIn: 'root' })
 export class RelationFacade {
+  areHumansByChildLoaded : Map<string, boolean> = new Map();
   constructor(
     private readonly store: Store<RelationState>,
     private readonly service : RelationService,
@@ -23,8 +24,15 @@ export class RelationFacade {
     });
   }
   loadParents(child: Human) {
+    if (this.areHumansByChildLoaded.has(child.localRef))
+    {
+      return;
+    }
+    this.areHumansByChildLoaded.set(child.localRef, true);
     this.humanFacade.getParents(child.localRef).subscribe(parents => {
       parents.forEach(parent => this.store.dispatch(addChild({ parent : parent.localRef, child : child.localRef})));
+      // console.log("got parents by child", child.name, parents);
+      this.areHumansByChildLoaded.delete(child.localRef);
     });
   }
   deleteChild(relation: Relation) {

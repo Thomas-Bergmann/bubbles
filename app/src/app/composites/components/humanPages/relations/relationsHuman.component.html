@@ -1,28 +1,28 @@
 <div *ngIf="selectedHuman">
 <div class="outerbox" *ngIf="parents">
-  <div class="header" (click)="_onBack(selectedHuman)">Parents of {{ selectedHuman.name }}</div>
+  <div class="header">Parents of {{ selectedHuman.name }}</div>
   <div class="humans">
     <listHumans
       [humans]="parents"
-      (selectHuman)="onSelectHuman($event)"
+      (selectHuman)="_onParent($event)"
       [displayOption]="displayOption"
     ></listHumans>
   </div>
 </div>
 <div class="outerbox">
   <div class="header">{{ selectedHuman.name }}</div>
-  <div class="humans">
+  <div class="humans" (click)="_onHuman(selectedHuman)">
     <canvasHuman
       [human]="selectedHuman"
     ></canvasHuman>
   </div>
 </div>
 <div class="outerbox" *ngIf="children">
-  <div class="header" (click)="_onBack(selectedHuman)">Children of {{ selectedHuman.name }}</div>
+  <div class="header">Children of {{ selectedHuman.name }}</div>
   <div class="humans">
     <listHumans
       [humans]="children"
-      (selectHuman)="onSelectHuman($event)"
+      (selectHuman)="_onChild($event)"
       [displayOption]="displayOption"
     ></listHumans>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnChanges, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Unsubscribable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { RelationFacade, RelationState, RelationType, getRelationsOfHuman, selec
   styleUrls: ['./relationsHuman.component.sass']
 })
 
-export class RelationsHumanPage implements OnInit  {
+export class RelationsHumanPage implements OnInit {
   humans: readonly Human[]  = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
   routeHuman? : string;
@@ -29,15 +29,13 @@ export class RelationsHumanPage implements OnInit  {
     private readonly route: ActivatedRoute,
   ) {
   }
-  ngOnChanges() : void {
-    this.selectedHuman = undefined;
-    this.sureThatEveryThingIsLoaded();
-  }
   ngOnInit(): void {
     this.unsubscribeOnDestroy.push(this.route.params.subscribe(params => {
       console.log("route", params);
       this.routeHuman = params['human'].replace('%20', ' ');
       this.selectedHuman = undefined;
+      this.parents = undefined;
+      this.children = undefined;
       this.sureThatEveryThingIsLoaded();
     }));
     this.unsubscribeOnDestroy.push(this.humanStore.select(selectAllHumans).subscribe(humans => {
@@ -47,12 +45,20 @@ export class RelationsHumanPage implements OnInit  {
     this.unsubscribeOnDestroy.push(this.relationStore.select(selectAllRelations).subscribe(allRelations => {
       if (this.selectedHuman !== undefined)
       {
-        let relations = getRelationsOfHuman(allRelations, this.selectedHuman, RelationType.CHILD);
+        // get children
+        let children_relations = getRelationsOfHuman(allRelations, this.selectedHuman, RelationType.CHILD);
         let children = new Array();
-        relations.forEach(relation => {
+        children_relations.forEach(relation => {
           this.humans.filter(h => h.localRef == relation.human2LocalRef).forEach(h => children.push(h));
         })
         this.children = children;
+        // get parents
+        let parent_relations = getRelationsOfHuman(allRelations, this.selectedHuman, RelationType.PARENT);
+        let parents = new Array();
+        parent_relations.forEach(relation => {
+          this.humans.filter(h => h.localRef == relation.human2LocalRef).forEach(h => parents.push(h));
+        })
+        this.parents = parents;
         this.sureThatEveryThingIsLoaded();
       }
     }));
@@ -68,7 +74,7 @@ export class RelationsHumanPage implements OnInit  {
   private sureThatEveryThingIsLoaded() {
     this.makeSureHumanIsLoaded();
     this.makeSureChildrenAreLoaded();
-    // this.makeSureParentsAreLoaded();
+    this.makeSureParentsAreLoaded();
   }
 
   private makeSureHumanIsLoaded() {
@@ -107,7 +113,13 @@ export class RelationsHumanPage implements OnInit  {
     }
   }
   
-  _onBack(human:Human) {
-    this.router.navigate([human.localRef], { relativeTo: this.route.parent?.parent });
+  _onChild(human:Human) {
+    this.router.navigate([human.localRef, "relations"], { relativeTo: this.route.parent?.parent });
+  }
+  _onParent(human:Human) {
+    this.router.navigate([human.localRef, "relations"], { relativeTo: this.route.parent?.parent });
+  }
+  _onHuman(human:Human) {
+    this.router.navigate([human.localRef, "relations"], { relativeTo: this.route.parent?.parent });
   }
 }

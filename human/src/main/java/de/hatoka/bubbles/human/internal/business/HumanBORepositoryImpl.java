@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
+import de.hatoka.bubbles.human.capi.business.RelationType;
 import de.hatoka.bubbles.human.internal.persistence.HumanDao;
 import de.hatoka.bubbles.human.internal.persistence.HumanPO;
 import de.hatoka.user.capi.business.UserRef;
@@ -65,5 +66,12 @@ public class HumanBORepositoryImpl implements HumanBORepository
     {
         LoggerFactory.getLogger(getClass()).trace("get humanpo by userRef {}", userRef.getGlobalRef());
         return humanDao.findByUserref(userRef.getGlobalRef()).stream().map(humanBOFactory::get).toList();
+    }
+
+    @Override
+    public Collection<HumanBO> getHumansByChild(HumanBO child)
+    {
+        LoggerFactory.getLogger(getClass()).trace("get humanpo by childRef {}", child.getRef().getGlobalRef());
+        return humanDao.findByChildRef(child.getInternalId(), RelationType.PARENT_OF).stream().map(humanBOFactory::get).toList();
     }
 }

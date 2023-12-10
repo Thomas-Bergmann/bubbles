@@ -63,4 +63,10 @@ public interface HumanBORepository
      * @return all registered humans
      */
     Collection<HumanBO> getAllHumans();
+
+    /**
+     * @param child the child
+     * @return humans with given child
+     */
+    Collection<HumanBO> getHumansByChild(HumanBO child);
 }

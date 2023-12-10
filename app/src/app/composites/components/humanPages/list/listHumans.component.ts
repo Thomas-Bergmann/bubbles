@@ -28,7 +28,7 @@ export class ListHumansPage implements OnInit  {
     this.humanFacade.loadHumans();
     this.allHumans$.subscribe(allHumans => {
       this.humans = Array.from(allHumans?.values());
-      console.log(this.humans);
+      // console.log("list humans component", this.humans);
     }); 
   }
   ngOnDestroy() {
