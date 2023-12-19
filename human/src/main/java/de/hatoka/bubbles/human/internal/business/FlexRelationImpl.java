@@ -4,15 +4,15 @@ import de.hatoka.bubbles.human.capi.business.FlexRelation;
 import de.hatoka.bubbles.human.capi.business.HumanBO;
 import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.RelationType;
-import de.hatoka.bubbles.human.internal.persistence.HumanRelationFlexPO;
+import de.hatoka.bubbles.human.internal.persistence.HumanRelationPO;
 import de.hatoka.common.capi.value.IncompleteDate;
 
 public class FlexRelationImpl implements FlexRelation
 {
     private final HumanBORepository repository;
-    private final HumanRelationFlexPO relation;
+    private final HumanRelationPO relation;
 
-    public FlexRelationImpl(HumanRelationFlexPO relation, HumanBORepository repository)
+    public FlexRelationImpl(HumanRelationPO relation, HumanBORepository repository)
     {
         this.relation = relation;
         this.repository = repository;

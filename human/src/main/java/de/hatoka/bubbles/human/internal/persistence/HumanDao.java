@@ -28,7 +28,7 @@ public interface HumanDao extends JpaRepository<HumanPO, Long>
 
     @Query("SELECT humans"
                     + " FROM de.hatoka.bubbles.human.internal.persistence.HumanPO as humans"
-                    + " , de.hatoka.bubbles.human.internal.persistence.HumanRelationFixPO as relations"
+                    + " , de.hatoka.bubbles.human.internal.persistence.HumanRelationPO as relations"
                     + " where relations.human1 = humans.id"
                     + " and relations.human2 = :childID"
                     + " and relations.type = :type")

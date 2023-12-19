@@ -15,8 +15,8 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "relation_flex", uniqueConstraints = { @UniqueConstraint(columnNames = { "human_1", "human_2", "type", "date_start" }) })
-public class HumanRelationFlexPO implements Serializable
+@Table(name = "human_relation", uniqueConstraints = { @UniqueConstraint(columnNames = { "human_1", "human_2", "type", "date_start" }) })
+public class HumanRelationPO implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class HumanRelationFlexPO implements Serializable
     @Column(name = "date_end", nullable = true)
     private String dateEnd;
 
-    public HumanRelationFlexPO()
+    public HumanRelationPO()
     {
     }
 

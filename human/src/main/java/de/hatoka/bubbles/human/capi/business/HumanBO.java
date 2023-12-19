@@ -49,22 +49,22 @@ public interface HumanBO
 
     default void addChild(HumanBO child)
     {
-        addFixRelation(RelationType.PARENT_OF, child);
+        addRelation(RelationType.PARENT_OF, child);
     }
 
     default void removeChild(HumanBO child)
     {
-        removeFixRelation(RelationType.PARENT_OF, child);
+        removeRelation(RelationType.PARENT_OF, child);
     }
 
     default List<HumanBO> getChildren()
     {
-        return getFixRelations(RelationType.PARENT_OF);
+        return getRelations(RelationType.PARENT_OF);
     }
 
     default List<HumanBO> getParents()
     {
-        return getFixRelations(RelationType.CHILD_OF);
+        return getRelations(RelationType.CHILD_OF);
     }
 
     default void addMariageWith(HumanBO husband)
@@ -85,18 +85,18 @@ public interface HumanBO
      * @param type
      * @param other
      */
-    void addFixRelation(RelationType type, HumanBO other);
+    void addRelation(RelationType type, HumanBO other);
 
     /**
      * "private" method to remove relation
      * @param type
      * @param other
      */
-    void removeFixRelation(RelationType type, HumanBO other);
+    void removeRelation(RelationType type, HumanBO other);
 
     /**
      * "private" method to retrieve relations
      * @param type
      */
-    List<HumanBO> getFixRelations(RelationType type);
+    List<HumanBO> getRelations(RelationType type);
 }
