@@ -1,6 +1,10 @@
 package de.hatoka.bubbles.human.internal.business;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +12,16 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import de.hatoka.bubbles.human.capi.business.FlexRelation;
 import de.hatoka.bubbles.human.capi.business.Gender;
 import de.hatoka.bubbles.human.capi.business.HumanBO;
+import de.hatoka.bubbles.human.capi.business.HumanBORepository;
 import de.hatoka.bubbles.human.capi.business.HumanRef;
+import de.hatoka.bubbles.human.capi.business.RelationType;
 import de.hatoka.bubbles.human.internal.persistence.HumanDao;
 import de.hatoka.bubbles.human.internal.persistence.HumanPO;
+import de.hatoka.bubbles.human.internal.persistence.HumanRelationDao;
+import de.hatoka.bubbles.human.internal.persistence.HumanRelationPO;
 import de.hatoka.common.capi.value.IncompleteDate;
 import de.hatoka.user.capi.business.UserRef;
 
@@ -22,6 +31,11 @@ public class HumanBOImpl implements HumanBO
 {
     @Autowired
     private HumanDao humanDao;
+    @Autowired
+    private HumanRelationDao relationDao;
+    @Autowired
+    private HumanBORepository repository;
+
     private final HumanRef humanRef;
 
     public HumanBOImpl(HumanRef humanRef)
@@ -127,5 +141,117 @@ public class HumanBOImpl implements HumanBO
     public Gender getGender()
     {
         return getPO().getGender();
+    }
+
+    @Override
+    public void addRelation(RelationType type, HumanBO other)
+    {
+        if (!type.isBiDirectional() && type.isReverse())
+        {
+            other.addRelation(type.getReverseRelation(), this);
+            return;
+        }
+        HumanRelationPO relation = new HumanRelationPO();
+        relation.setHuman1(this.getInternalId());
+        relation.setHuman2(other.getInternalId());
+        relation.setType(type);
+        relation.setDateStart(IncompleteDate.UNKNOWN_DATE.toString());
+        relation.setDateEnd(IncompleteDate.UNKNOWN_DATE.toString());
+        relation = relationDao.save(relation);
+    }
+
+    @Override
+    public List<HumanBO> getRelations(RelationType type)
+    {
+        if (type.isBiDirectional())
+        {
+            return getBiDirectionalRelations(type);
+        }
+        if (type.isReverse())
+        {
+            return getReverseRelations(type);
+        }
+        return getNonReverseRelations(type);
+    }
+    private List<HumanBO> getNonReverseRelations(RelationType type)
+    {
+        return map(relationDao.findByHuman1(getInternalId()).stream().filter(po -> type.equals(po.getType())).map(HumanRelationPO::getHuman2));
+    }
+
+    private List<HumanBO> getReverseRelations(RelationType type)
+    {
+        final RelationType reverseType = type.getReverseRelation();
+        return map(relationDao.findByHuman2(getInternalId()).stream().filter(po -> reverseType.equals(po.getType())).map(HumanRelationPO::getHuman1));
+    }
+
+    private List<HumanBO> getBiDirectionalRelations(RelationType type)
+    {
+        List<Long> relations = new ArrayList<>();
+        relations.addAll(relationDao.findByHuman1(getInternalId()).stream().filter(po -> type.equals(po.getType())).map(HumanRelationPO::getHuman2).toList());
+        relations.addAll(relationDao.findByHuman2(getInternalId()).stream().filter(po -> type.equals(po.getType())).map(HumanRelationPO::getHuman1).toList());
+        return map(relations.stream());
+    }
+
+    private List<HumanBO> map(Stream<Long> relations)
+    {
+        return relations.distinct().map(repository::findHuman).filter(Optional::isPresent).map(Optional::get).toList();
+    }
+
+    @Override
+    public void removeRelation(RelationType type, HumanBO other)
+    {
+        final Long otherID = other.getInternalId();
+        if (type.isBiDirectional() || !type.isReverse())
+        {
+            relationDao.findByHuman1(getInternalId()).stream().filter(po -> type.equals(po.getType())).filter(po -> otherID.equals(po.getHuman2())).forEach(relationDao::delete);
+        }
+        if (type.isBiDirectional() || type.isReverse())
+        {
+            final RelationType reverseType = type.getReverseRelation();
+            relationDao.findByHuman2(getInternalId()).stream().filter(po -> reverseType.equals(po.getType())).filter(po -> otherID.equals(po.getHuman1())).forEach(relationDao::delete);
+        }
+    }
+
+    @Override
+    public void addMariageWith(HumanBO partner, IncompleteDate start, IncompleteDate end)
+    {
+        HumanRelationPO relation = new HumanRelationPO();
+        relation.setHuman1(this.getInternalId());
+        relation.setHuman2(partner.getInternalId());
+        relation.setType(RelationType.MARRIED_WITH);
+        relation.setDateStart(start.toString());
+        relation.setDateEnd(end.toString());
+        relation = relationDao.save(relation);
+    }
+
+    @Override
+    public void removeMariageWith(HumanBO partner)
+    {
+        Long otherID = partner.getInternalId();
+        relationDao.findByHuman1(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).filter(po -> otherID.equals(po.getHuman2())).forEach(relationDao::delete);
+        relationDao.findByHuman2(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).filter(po -> otherID.equals(po.getHuman1())).forEach(relationDao::delete);
+    }
+
+    @Override
+    public List<HumanBO> getMariageWith()
+    {
+        List<Long> relations = new ArrayList<>();
+        relations.addAll(relationDao.findByHuman1(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).map(HumanRelationPO::getHuman2).toList());
+        relations.addAll(relationDao.findByHuman2(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).map(HumanRelationPO::getHuman1).toList());
+        return map(relations.stream());
+    }
+
+    @Override
+    public List<FlexRelation> getMariageRelations()
+    {
+        List<HumanRelationPO> relations = new ArrayList<>();
+        relations.addAll(relationDao.findByHuman1(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).toList());
+        relations.addAll(relationDao.findByHuman2(getInternalId()).stream().filter(po -> RelationType.MARRIED_WITH.equals(po.getType())).toList());
+        return relations.stream().map(this::map).toList();
+    }
+
+    private FlexRelation map(HumanRelationPO flex)
+    {
+        return new FlexRelationImpl(flex, repository);
     }
 }

@@ -1,15 +1,5 @@
-<div class="outerbox">
-  <div class="header">Humans</div>
-  <div class="humans">
-    <listHumans
-      [humans]="humans"
-      (selectHuman)="onSelectHuman($event)"
-      [displayOption]="displayOption"
-    ></listHumans>
-  </div>
-</div>
 <div class="outerbox" *ngIf="selectedHuman">
-  <div class="header">Edit Human</div>
+  <div class="header" (click)="_onBack(selectedHuman)">Details of {{ selectedHuman.name }}</div>
   <div class="editHuman">
     <editHuman
       [human]="selectedHuman"

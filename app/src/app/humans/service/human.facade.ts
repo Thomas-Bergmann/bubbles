@@ -6,6 +6,7 @@ import { HumanState, Human, addHumans, addHuman, removeHuman } from 'src/app/hum
 import { OIDCState, selectCurrentUser } from 'src/app/oidc';
 import { ServiceEndpoint, ServiceState, updateServiceLocation } from 'src/app/core/service';
 import { environment } from 'src/environments/environment';
+import { Observable, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HumanFacade {
@@ -60,5 +61,12 @@ export class HumanFacade {
   deleteHuman(human: Human) {
     this.store.dispatch(removeHuman({ human : human}));
     this.service.deleteHuman(human).subscribe();
+  }
+  getParents(childLocalRef:string): Observable<Human[]> {
+    return this.service.getParents(childLocalRef).pipe(map(ros => this.retrievedHuman(ros)));
+  }
+  retrievedHuman(humans : Human[]): Human[] {
+    this.store.dispatch(addHumans({ humans : humans}));
+    return humans;
   }
 }

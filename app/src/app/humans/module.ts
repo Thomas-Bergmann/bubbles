@@ -34,6 +34,8 @@ import * as component from './components';
     component.AddHumanComponent,
     component.EditHumanComponent,
     component.DeleteHumanComponent,
+    component.CanvasHumanComponent,
+    component.CardHumanComponent,
     component.ListHumansComponent,
   ]
 })

@@ -1,0 +1,15 @@
+<div class="outerbox">
+  <div class="header">Humans</div>
+  <div class="humans">
+    <listHumans
+      [humans]="humans"
+      (selectHuman)="onSelectHuman($event)"
+      [displayOption]="displayOption"
+    ></listHumans>
+  </div>
+</div>
+<div class="outerbox" *ngIf="selectedHuman">
+  <div class="header">Select Sub Page</div>
+  <div class="subpage" (click)="_onEdit(selectedHuman)">EDIT</div>
+  <div class="subpage" (click)="_onRelations(selectedHuman)">RELATIONS</div>
+</div>

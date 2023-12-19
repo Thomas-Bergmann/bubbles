@@ -42,6 +42,12 @@ export class HumanService {
       .pipe(map(ros => this.convertListHumanRO(ros)));
   }
 
+  getParents(childLocalRef:string): Observable<Human[]> {
+    return this.apiService
+      .get<HumanRO[]>(`/humans?childRef=${childLocalRef}`)
+      .pipe(map(ros => this.convertListHumanRO(ros)));
+  }
+
   getHuman(externalID: string): Observable<Human> {
     return this.apiService
       .get<HumanRO>(`/humans/${externalID}`)

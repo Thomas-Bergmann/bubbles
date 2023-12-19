@@ -4,18 +4,15 @@ import { AuthGuard } from '../oidc/guard';
 import * as composites from './components';
 
 const routes: Routes = [
-//  { path: 'players', component: composites.ListPlayersViewComponent },
-//  { path: 'players/:player', component: composites.DetailPlayerViewComponent },
-//  { path: 'players/:player/seats/:seat', component: composites.GameBubbleViewComponent },
 {
   path: 'bubbles',
   canLoad: [AuthGuard],
   canActivate: [AuthGuard],
   children: [
-    { path: '',       pathMatch: 'full', component: composites.ListBubblesViewComponent },
+    { path: '',       pathMatch: 'full', component: composites.ListBubblesPage },
     { path: ':bubble', pathMatch: 'prefix',
       children: [
-        { path: '',          pathMatch: 'full', component: composites.DetailBubbleViewComponent },
+        { path: '',          pathMatch: 'full', component: composites.DetailBubblePage },
       ]
     }
   ]
@@ -25,10 +22,12 @@ const routes: Routes = [
   canLoad: [AuthGuard],
   canActivate: [AuthGuard],
   children: [
-    { path: '',       pathMatch: 'full', component: composites.ListHumansViewComponent },
+    { path: '',       pathMatch: 'full', component: composites.ListHumansPage },
     { path: ':human', pathMatch: 'prefix',
       children: [
-        { path: '',          pathMatch: 'full', component: composites.DetailHumanViewComponent },
+        { path: '',          pathMatch: 'full', component: composites.DetailHumanPage },
+        { path: 'edit',      pathMatch: 'full', component: composites.EditHumanPage },
+        { path: 'relations', pathMatch: 'full', component: composites.RelationsHumanPage },
       ]
     }
   ]

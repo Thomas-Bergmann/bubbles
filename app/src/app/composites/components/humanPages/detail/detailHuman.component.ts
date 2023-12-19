@@ -6,12 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HumanFacade, HumanState, Human, selectAllHumans, listHumansComponentOptionCanvas } from 'src/app/humans';
 
 @Component({
-  selector: 'detailHumanView',
-  templateUrl: './detailHumanView.component.html',
-  styleUrls: ['./detailHumanView.component.sass']
+  templateUrl: './detailHuman.component.html',
+  styleUrls: ['./detailHuman.component.sass']
 })
 
-export class DetailHumanViewComponent implements OnInit  {
+export class DetailHumanPage implements OnInit  {
   allHumans$: Observable<Human[]>;
   humans: readonly Human[]  = [];
   unsubscribeOnDestroy : Unsubscribable[] = [];
@@ -70,10 +69,13 @@ export class DetailHumanViewComponent implements OnInit  {
         }
     });
   }
-  _onUpdateHuman(human:Human) {
-    this.humanFacade.updateHuman(human);
+  _onEdit(human:Human) {
+    this.router.navigate(["edit"], { relativeTo: this.route });
   }
-  _onDeleteHuman(human:Human) {
-    this.humanFacade.deleteHuman(human);
+  _onRelations(human:Human) {
+    this.router.navigate(["relations"], { relativeTo: this.route });
+  }
+  _onBack(human:Human) {
+    this.router.navigate([human.localRef], { relativeTo: this.route.parent?.parent });
   }
 }

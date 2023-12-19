@@ -7,14 +7,17 @@ import * as composites from './components';
 import { CompositeRoutingModule } from './routing';
 import { BubbleModule } from '../bubbles';
 import { HumanModule } from '../humans';
+import { Relation, RelationsModule } from '../relations';
 
 
 @NgModule({
   declarations: [
-    composites.ListBubblesViewComponent,
-    composites.DetailBubbleViewComponent,
-    composites.ListHumansViewComponent,
-    composites.DetailHumanViewComponent,
+    composites.ListBubblesPage,
+    composites.DetailBubblePage,
+    composites.ListHumansPage,
+    composites.DetailHumanPage,
+    composites.EditHumanPage,
+    composites.RelationsHumanPage,
   ],
   imports: [
     CommonModule,
@@ -22,6 +25,7 @@ import { HumanModule } from '../humans';
     CompositeRoutingModule,
     BubbleModule,
     HumanModule,
+    RelationsModule,
   ],
   providers: [],
   exports: []

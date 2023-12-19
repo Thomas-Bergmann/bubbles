@@ -35,6 +35,7 @@ public class HumanController
     public static final String PATH_ROOT = "/humans";
     public static final String PATH_SUB_HUMAN = "/{humanid}";
     public static final String QUERY_USER_REF = "userRef";
+    public static final String QUERY_CHILD_REF = "childRef";
     public static final String PATH_VAR_HUMANID= "humanid";
     public static final String PATH_HUMAN = PATH_ROOT + PATH_SUB_HUMAN;
     
@@ -48,10 +49,26 @@ public class HumanController
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<HumanRO> getbubbles(@QueryParam(QUERY_USER_REF) String userRef)
+    public List<HumanRO> getHumans(@QueryParam(QUERY_USER_REF) String userRef, @QueryParam(QUERY_CHILD_REF) String childRef)
     {
-        Collection<HumanBO> bubbles = humanRepository.getHumans(UserRef.localRef(userRef));
-        return humanBO2RO.apply(bubbles);
+        if (childRef == null && userRef == null)
+        {
+            errorSupport.throwBadRequestException("human.get.no_user", "no userRef or childRef query parameter");
+        }
+        Collection<HumanBO> humans;
+        if (childRef == null)
+        {
+             humans = humanRepository.getHumans(UserRef.localRef(userRef));
+        }
+        else {
+            Optional<HumanBO> childOpt = humanRepository.findHuman(HumanRef.localRef(childRef));
+            if (childOpt.isEmpty())
+            {
+                errorSupport.throwNotFoundException("notfound.human", childRef);
+            }
+            humans = humanRepository.getHumansByChild(childOpt.get());
+        }
+        return humanBO2RO.apply(humans);
     }
 
     @PutMapping(value = PATH_SUB_HUMAN, consumes = { APPLICATION_JSON_VALUE })
@@ -67,7 +84,7 @@ public class HumanController
         Optional<HumanBO> humanOpt = humanRepository.findHuman(humanRef);
         if (humanOpt.isPresent())
         {
-            errorSupport.throwNotFoundException("found.human", humanRef.toString());
+            errorSupport.throwPreconditionFailedException("found.human", humanRef.toString());
         }
         HumanBO human = humanRepository.createHuman(humanRef, input.getName(), userRef);
         human.setDateOfBirth(input.getDateOfBirth());

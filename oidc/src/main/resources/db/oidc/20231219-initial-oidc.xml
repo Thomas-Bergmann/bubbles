@@ -1,6 +1,11 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="tm@hatoka.de" id="1702922461725-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="oidc_id_provider" />
+            </not>
+        </preConditions>
         <createTable tableName="oidc_id_provider">
             <column autoIncrement="true" computed="false" name="identityprovider_id" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_oidc_id_provider"/>
@@ -26,8 +31,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-4">
         <createTable tableName="oidc_id_provider_map">
             <column autoIncrement="true" computed="false" name="identityprovider_map_id" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_oidc_id_provider_map"/>
@@ -42,14 +45,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-13">
         <addUniqueConstraint columnNames="idp_ref" constraintName="AK_oidc_id_provider" tableName="oidc_id_provider"/>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-14">
         <addUniqueConstraint columnNames="identityprovider_id, subject" constraintName="AK_oidc_id_provider_map" tableName="oidc_id_provider_map"/>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-15">
         <createIndex indexName="IDX_oidc_id_provider_map" tableName="oidc_id_provider_map">
             <column name="identityprovider_id"/>
         </createIndex>

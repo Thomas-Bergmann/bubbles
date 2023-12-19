@@ -1,6 +1,11 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="tm@hatoka.de" id="1702922461725-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bubbles" />
+            </not>
+        </preConditions>
         <createTable tableName="bubbles">
             <column autoIncrement="true" computed="false" name="bubble_id" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_bubble"/>
@@ -15,11 +20,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-9">
         <addUniqueConstraint columnNames="bubble_ext" constraintName="AK_bubble" tableName="bubbles"/>
-    </changeSet>
-    <changeSet author="tm@hatoka.de" id="1702922461725-10">
         <createIndex indexName="IDX_bubble_user" tableName="bubbles">
             <column name="user_ref"/>
         </createIndex>
