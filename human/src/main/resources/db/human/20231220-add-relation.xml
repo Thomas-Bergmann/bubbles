@@ -1,0 +1,63 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="tm@hatoka.de" id="1702922461725-5">
+        <createTable tableName="relation_fix">
+            <column autoIncrement="true" computed="false" name="human_rel_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_relation_fix"/>
+            </column>
+            <column computed="false" name="human_1" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column computed="false" name="human_2" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column computed="false" name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-6">
+        <createTable tableName="relation_flex">
+            <column autoIncrement="true" computed="false" name="human_rel_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_relation_flex"/>
+            </column>
+            <column computed="false" name="human_1" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column computed="false" name="human_2" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column computed="false" name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column computed="false" name="date_start" type="varchar(10)"/>
+            <column computed="false" name="date_end" type="varchar(10)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-16">
+        <addUniqueConstraint columnNames="human_1, human_2, type" constraintName="AK_relation_fix" tableName="relation_fix"/>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-17">
+        <createIndex indexName="IDX_relation_fix_1" tableName="relation_fix">
+            <column name="human_1"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-18">
+        <createIndex indexName="IDX_relation_fix_2" tableName="relation_fix">
+            <column name="human_2"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-19">
+        <addUniqueConstraint columnNames="human_1, human_2, type" constraintName="AK_relation_flex" tableName="relation_flex"/>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-20">
+        <createIndex indexName="IDX_relation_flex_1" tableName="relation_flex">
+            <column name="human_1"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="tm@hatoka.de" id="1702922461725-21">
+        <createIndex indexName="IDX_relation_flex_2" tableName="relation_flex">
+            <column name="human_2"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

@@ -3,4 +3,5 @@
     <include file="classpath:db/oidc/20231219-initial-oidc.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/human/20231219-initial-human.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/bubble/20231219-initial-bubble.xml" relativeToChangelogFile="false" />
+    <include file="classpath:db/human/20231220-add-relation.xml" relativeToChangelogFile="false" />
 </databaseChangeLog>
