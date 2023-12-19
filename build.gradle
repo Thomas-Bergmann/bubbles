@@ -23,7 +23,6 @@ def versionMicrosoftSqlserverMssqlJdbc="12.4.2.jre11"
 def versionGlassfishJersey="3.1.3"
 def versionSpringDoc="2.2.0"
 def versionJJWT="0.12.3"
-def versionFlyway="9.22.3"
 def versionJupiter="5.10.1"
 def versionJunitPlatform="1.10.1"
 
@@ -71,8 +70,8 @@ subprojects {
                 dependency "io.jsonwebtoken:jjwt-impl:${versionJJWT}"
                 dependency "io.jsonwebtoken:jjwt-jackson:${versionJJWT}"
 
-                dependency "org.flywaydb:flyway-core:${versionFlyway}"
-                dependency "org.flywaydb:flyway-sqlserver:${versionFlyway}"
+                dependency "org.liquibase:liquibase-core:4.25.0"
+                dependency 'info.picocli:picocli:4.7.5'
                 dependency "com.microsoft.sqlserver:mssql-jdbc:${versionMicrosoftSqlserverMssqlJdbc}"
 
                 dependency "org.junit.jupiter:junit-jupiter:${versionJupiter}"
