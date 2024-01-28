@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "425085164682",
+    "project_id": "bubbles-b12be",
+    "storage_bucket": "bubbles-b12be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425085164682:android:2bc8211f2ec96c9974a173",
+        "android_client_info": {
+          "package_name": "de.hatoka.flutter_bubbles"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfFGI06RKYO4hj-2Hz2lW7prJ-J4nOOn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
