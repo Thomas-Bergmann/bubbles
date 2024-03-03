@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bubbles/database/remote/firestore_user.dart';
 import 'package:flutter_bubbles/models/auth_model.dart';
 import 'package:flutter_bubbles/models/person_model.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_bubbles/models/preference_model.dart';
@@ -56,6 +58,8 @@ class MainAppState extends State<MainApp> {
 
   void initializeAfterLogin(BuildContext context) {
     AuthModel authModel = Provider.of<AuthModel>(context);
+    PreferenceModel preferences = Provider.of<PreferenceModel>(context);
+    Future.wait([initializeDateFormatting(preferences.locale, null).then((_) => print("dateformats for ${preferences.locale} initialized"))]);
     if (authModel.isLoggedIn()) {
       String userID = authModel.getUserID() ?? '';
       print('user is logged-in $userID');

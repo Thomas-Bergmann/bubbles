@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bubbles/models/preference_model.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_bubbles/models/person.dart';
@@ -12,16 +14,16 @@ class HumansPage extends StatelessWidget {
 
   @override
   build(BuildContext context) {
-    return Consumer<PersonModel>(
-        builder: (context, model, child) => Scaffold(
+    return Consumer2<PersonModel, PreferenceModel>(
+        builder: (context, personModel, preferenceMode, child) => Scaffold(
               appBar: createAppBarWithAdd(
-                  context, 'People (${model.getPersons().length})', () => _navigateToAddPerson(context)),
-              body: _getHumansBody(context, model),
+                  context, 'People (${personModel.getPersons().length})', () => _navigateToAddPerson(context)),
+              body: _getHumansBody(context, personModel, preferenceMode),
             ));
   }
 
   // https://www.youtube.com/watch?v=RPvhoghXn54 minute 10
-  Widget _getHumansBody(BuildContext context, PersonModel personModel) {
+  Widget _getHumansBody(BuildContext context, PersonModel personModel, PreferenceModel preferenceModel) {
     final persons = personModel.getPersons();
     print('HumansPage: persons ${persons.length} @ ${personModel.uuid}');
     return Column(children: [
@@ -29,6 +31,7 @@ class HumansPage extends StatelessWidget {
         child: ListView.builder(
             itemCount: persons.length,
             itemBuilder: (context, index) => PersonTile(
+                dateFormat: DateFormat.yMd(preferenceModel.locale),
                 onTap: () => _navigateToPerson(context, persons[index]),
                 person: persons[index])),
       ),
