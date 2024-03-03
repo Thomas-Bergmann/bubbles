@@ -9,7 +9,7 @@ class PersonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String birthday =
-        person.nextBirthday == null ? "no" : person.nextBirthday.toString();
+        person.birthday == null ? "no" : person.birthday.toString();
     return GestureDetector(
         onTap: onTap,
         child: ListTile(

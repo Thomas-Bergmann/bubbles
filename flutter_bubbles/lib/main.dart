@@ -49,7 +49,7 @@ class MainAppState extends State<MainApp> {
               theme: preferences.bubbleTheme.light(),
               darkTheme: preferences.bubbleTheme.dark(),
               themeMode: preferences.themeMode,
-              // debugShowCheckedModeBanner: true,
+              // debugShowCheckedModeBanner: false,
               home: const HomePage(),
             ));
   }

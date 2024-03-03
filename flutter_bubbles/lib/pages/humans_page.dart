@@ -15,7 +15,7 @@ class HumansPage extends StatelessWidget {
     return Consumer<PersonModel>(
         builder: (context, model, child) => Scaffold(
               appBar: createAppBarWithAdd(
-                  context, 'Persons (${model.getPersons().length} @ ${model.uuid})', () => _navigateToAddPerson(context)),
+                  context, 'People (${model.getPersons().length})', () => _navigateToAddPerson(context)),
               body: _getHumansBody(context, model),
             ));
   }

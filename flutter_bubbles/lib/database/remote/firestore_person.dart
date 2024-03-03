@@ -21,20 +21,22 @@ class FireStorePerson extends ChangeNotifier {
   }
 
   /// return the list of all person by current user
-  List<Person> getAll() {
-    List<Person> result = [];
+  Map<String, Person> getAll() {
+    Map<String, Person> result = {};
     var snapshots = collection
         .where(Person.FIRESTORE_USER_ID, isEqualTo: user.userid)
         .snapshots();
-    snapshots.forEach((snapshot) => _addToResult(result, snapshot));
+    snapshots.forEach((snapshot) => _addToResult(result, snapshot)).catchError((error) =>
+      print(
+        "FireStorePerson($uuid): error loaded persons from db: ${error}"));
     print(
         "FireStorePerson($uuid): loaded persons from db: ${result.length} - user ${user.userid}");
     return result;
   }
 
-  void _addToResult(List<Person> result, snapshot) {
+  void _addToResult(Map<String, Person> result, snapshot) {
     for (var doc in snapshot.docs) {
-      result.add(Person.fromFireStore(doc));
+      result[doc.id.toString()] = Person.fromFireStore(doc);
     }
     notifyListeners();
   }

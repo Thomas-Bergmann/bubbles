@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 class PersonModel extends ChangeNotifier {
   final String uuid = const Uuid().v4();
   FireStorePerson? _fireStorePerson;
-  List<Person> _persons = [];
+  Map<String, Person> _persons = {};
   int _lastCount = 0;
   PersonModel() {
     print("PersonModel($uuid): created ");
@@ -17,17 +17,17 @@ class PersonModel extends ChangeNotifier {
   List<Person> getPersons() {
     print("PersonModel($uuid): get persons called.");
     if (_fireStorePerson != null && _lastCount == 0 && _persons.isEmpty) {
-      _persons = _fireStorePerson?.getAll() ?? [];
+      _persons = _fireStorePerson?.getAll() ?? {};
       print(
           "PersonModel($uuid): retrieved persons from db: ${_persons.length} ($_lastCount)");
     }
     print("PersonModel($uuid): get persons called: ${_persons.length} ($_lastCount)");
-    return _persons;
+    return _persons.values.toList();
   }
 
   void addPerson(Person person) {
+    // will add person to model via snapshots
     _fireStorePerson?.add(person);
-    _persons.add(person);
     notifyListeners();
   }
 
@@ -38,7 +38,7 @@ class PersonModel extends ChangeNotifier {
 
   void deletePerson(Person person) {
     _fireStorePerson?.delete(person);
-    _persons.remove(person);
+    _persons.remove(person.firestoreId);
     notifyListeners();
   }
 

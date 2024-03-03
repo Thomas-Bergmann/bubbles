@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
   String getText(PersonModel personModel) {
     var persons = personModel.getPersons();
     print('HomePage: persons ${persons.length} @ ${personModel.uuid}');
-    return 'Persons (${persons.length} @ ${personModel.uuid})';
+    return 'People (${persons.length})';
   }
 
   Center _getButton(BuildContext context, String text, Widget page) {
