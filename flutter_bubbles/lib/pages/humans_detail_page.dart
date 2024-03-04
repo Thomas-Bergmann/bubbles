@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bubbles/models/person.dart';
-import 'package:flutter_bubbles/widgets/text_input_field.dart';
+import 'package:flutter/widgets.dart';
+
 import 'package:provider/provider.dart';
 
+import 'package:flutter_bubbles/models/person.dart';
 import 'package:flutter_bubbles/models/person_model.dart';
 import 'package:flutter_bubbles/widgets/app_bar.dart';
 
@@ -16,26 +17,48 @@ class HumansDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: createSimpleAppBar(context, person.name),
-      body: getHumansBody(context),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: _getHumansBody(context),
+      ),
     );
   }
 
   // https://www.youtube.com/watch?v=RPvhoghXn54 minute 10
-  Column getHumansBody(BuildContext context) {
+  Widget _getHumansBody(BuildContext context) {
     var controllerForName = TextEditingController(text: person.name);
-
-    return Column(children: [
-      TextInputField(
-          controller: controllerForName, keyboardType: TextInputType.name),
-      getButtons(context, controllerForName),
-    ]);
+    final formKey = GlobalKey<FormState>();
+    return Material(
+        child: Form(
+            key: formKey,
+            child: Column(children: [
+              TextFormField(
+                  decoration: const InputDecoration(
+                      labelText: 'Name*', hintText: 'Full name of person'),
+                  controller: controllerForName,
+                  keyboardType: TextInputType.name),
+              InputDatePickerFormField(
+                fieldLabelText: 'Birthday',
+                firstDate: DateTime.fromMicrosecondsSinceEpoch(0),
+                lastDate: DateTime.now(),
+                initialDate: person.birthday,
+                onDateSubmitted: onDateTimeChange,
+                onDateSaved: onDateTimeChange,
+              ),
+              _getButtons(context, controllerForName, formKey),
+            ])));
   }
-
-  Widget getButtons(BuildContext context, TextEditingController controllerForName) {
+  void onDateTimeChange(DateTime dateTime)
+  {
+    print('date changed: ${dateTime}');
+    person.birthday = dateTime;
+  }
+  Widget _getButtons(BuildContext context,
+      TextEditingController controllerForName, GlobalKey<FormState> formKey) {
     var buttons = [
       IconButton(
         icon: const Icon(Icons.save),
-        onPressed: () => onSave(context, controllerForName),
+        onPressed: () => onSave(context, controllerForName, formKey),
         tooltip: "Save",
       )
     ];
@@ -62,9 +85,12 @@ class HumansDetailPage extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  void onSave(BuildContext context, TextEditingController controllerForName) {
+  void onSave(BuildContext context, TextEditingController controllerForName,
+      GlobalKey<FormState> formKey) {
     // update person and inform model
+    formKey.currentState?.save();
     person.name = controllerForName.text;
+    print("update person ${person.name} with birthday ${person.birthday} state ${formKey.currentState}");
     PersonModel model = Provider.of<PersonModel>(context, listen: false);
     if (isNew) {
       model.addPerson(person);

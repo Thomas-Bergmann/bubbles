@@ -31,7 +31,7 @@ class HumansPage extends StatelessWidget {
         child: ListView.builder(
             itemCount: persons.length,
             itemBuilder: (context, index) => PersonTile(
-                dateFormat: DateFormat.yMd(preferenceModel.locale),
+                dateFormat: DateFormat.yMMMd(preferenceModel.locale),
                 onTap: () => _navigateToPerson(context, persons[index]),
                 person: persons[index])),
       ),

@@ -9,19 +9,15 @@ class PersonModel extends ChangeNotifier {
   final String uuid = const Uuid().v4();
   FireStorePerson? _fireStorePerson;
   Map<String, Person> _persons = {};
-  int _lastCount = 0;
   PersonModel() {
     print("PersonModel($uuid): created ");
   }
 
   List<Person> getPersons() {
-    print("PersonModel($uuid): get persons called.");
-    if (_fireStorePerson != null && _lastCount == 0 && _persons.isEmpty) {
+    if (_fireStorePerson != null && _persons.isEmpty) {
+      print("PersonModel($uuid): get persons called.");
       _persons = _fireStorePerson?.getAll() ?? {};
-      print(
-          "PersonModel($uuid): retrieved persons from db: ${_persons.length} ($_lastCount)");
     }
-    print("PersonModel($uuid): get persons called: ${_persons.length} ($_lastCount)");
     return _persons.values.toList();
   }
 
@@ -42,24 +38,11 @@ class PersonModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void retrieveUpdate() {
-    if (_lastCount != _persons.length) {
-      print(
-          "PersonModel($uuid): retrieveUpdate REAL updated db: ${_persons.length} was $_lastCount");
-      _lastCount = _persons.length;
-      notifyListeners();
-    } else {
-      print(
-          "PersonModel($uuid): retrieveUpdate NOT updated db: ${_persons.length}");
-    }
-  }
-
   void setUser(FireStoreUser fireStoreUser) {
     var fireStorePerson = FireStorePerson(user: fireStoreUser);
-    fireStorePerson.addListener(() => retrieveUpdate());
+    fireStorePerson.addListener(notifyListeners);
     _fireStorePerson = fireStorePerson;
-    var persons = getPersons();
     print(
-        "PersonModel($uuid): updated user (${fireStoreUser.userid}): ${persons.length}");
+        "PersonModel($uuid): updated authentication (${fireStoreUser.userid}): ${_persons.length}");
   }
 }

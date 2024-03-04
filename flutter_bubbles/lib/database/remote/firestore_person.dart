@@ -36,7 +36,9 @@ class FireStorePerson extends ChangeNotifier {
 
   void _addToResult(Map<String, Person> result, snapshot) {
     for (var doc in snapshot.docs) {
-      result[doc.id.toString()] = Person.fromFireStore(doc);
+      var person = Person.fromFireStore(doc);
+      result[doc.id.toString()] = person;
+      print("FireStorePerson($uuid): update person from db: ${doc.id} - user ${person.name} with ${person.birthday}");
     }
     notifyListeners();
   }
