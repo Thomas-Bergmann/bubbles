@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,6 @@ import de.hatoka.bubbles.human.capi.remote.HumanDataRO;
 import de.hatoka.bubbles.human.capi.remote.HumanRO;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
 import de.hatoka.user.capi.business.UserRef;
-import jakarta.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping(value = HumanController.PATH_ROOT, produces = { APPLICATION_JSON_VALUE })
@@ -49,7 +49,7 @@ public class HumanController
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<HumanRO> getHumans(@QueryParam(QUERY_USER_REF) String userRef, @QueryParam(QUERY_CHILD_REF) String childRef)
+    public List<HumanRO> getHumans(@RequestParam(value = QUERY_USER_REF, required = false) String userRef, @RequestParam(value = QUERY_CHILD_REF, required = false) String childRef)
     {
         if (childRef == null && userRef == null)
         {

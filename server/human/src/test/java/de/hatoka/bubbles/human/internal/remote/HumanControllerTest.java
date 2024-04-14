@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -136,14 +136,14 @@ public class HumanControllerTest
 
     private List<HumanRO> getParents(HumanRef childRef)
     {
-        String uri = HumanController.PATH_ROOT + "?" + HumanController.QUERY_CHILD_REF + "=" + childRef.getLocalRef();
-        return Arrays.asList(this.restTemplate.getForObject(uri, HumanRO[].class));
+        String uri = HumanController.PATH_ROOT + "?" + HumanController.QUERY_CHILD_REF + "={childRef}";
+        return this.restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<HumanRO>>() {}, childRef.getLocalRef()).getBody();
     }
 
     private List<HumanRO> getList(UserRef userRef)
     {
-        String uri = HumanController.PATH_ROOT + "?" + HumanController.QUERY_USER_REF + "=" + userRef.getLocalRef();
-        return Arrays.asList(this.restTemplate.getForObject(uri, HumanRO[].class));
+        String uri = HumanController.PATH_ROOT + "?" + HumanController.QUERY_USER_REF + "={userRef}";
+        return this.restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<HumanRO>>() {}, userRef.getLocalRef()).getBody();
     }
 
     private Map<String, String> createURIParameter(HumanRef ref)

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,6 @@ import de.hatoka.bubbles.bubble.capi.remote.BubbleCreateRO;
 import de.hatoka.bubbles.bubble.capi.remote.BubbleRO;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
 import de.hatoka.user.capi.business.UserRef;
-import jakarta.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping(value = BubbleController.PATH_ROOT, produces = { APPLICATION_JSON_VALUE })
@@ -46,7 +46,7 @@ public class BubbleController
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<BubbleRO> getBubbles(@QueryParam(QUERY_USER_REF) String userRef)
+    public List<BubbleRO> getBubbles(@RequestParam(QUERY_USER_REF) String userRef)
     {
         Collection<BubbleBO> bubbles = bubbleRepository.getBubbles(UserRef.localRef(userRef));
         return bubbleBO2RO.apply(bubbles);

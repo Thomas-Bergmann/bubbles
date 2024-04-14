@@ -3,7 +3,6 @@ package de.hatoka.bubbles.human.internal.remote;
 import java.time.Period;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -39,6 +38,6 @@ public class HumanBO2RO
 
     public List<HumanRO> apply(Collection<HumanBO> projects)
     {
-        return projects.stream().map(this::apply).collect(Collectors.toList());
+        return projects.stream().map(this::apply).toList();
     }
 }
