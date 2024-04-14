@@ -2,7 +2,6 @@ package de.hatoka.bubbles.bubble.internal.remote;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -29,6 +28,6 @@ public class BubbleBO2RO
 
     public List<BubbleRO> apply(Collection<BubbleBO> projects)
     {
-        return projects.stream().map(this::apply).collect(Collectors.toList());
+        return projects.stream().map(this::apply).toList();
     }
 }

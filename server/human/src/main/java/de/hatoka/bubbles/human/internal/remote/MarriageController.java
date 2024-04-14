@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +21,6 @@ import de.hatoka.bubbles.human.capi.business.HumanRef;
 import de.hatoka.bubbles.human.capi.remote.MarriageDataRO;
 import de.hatoka.common.capi.rest.RestControllerErrorSupport;
 import de.hatoka.common.capi.value.IncompleteDate;
-import jakarta.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping(value = MarriageController.PATH_ROOT, produces = { APPLICATION_JSON_VALUE })
@@ -41,7 +41,7 @@ public class MarriageController
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<MarriageDataRO> getMarriages(@QueryParam(PARAM_HUMAN_REF) String humanRef)
+    public List<MarriageDataRO> getMarriages(@RequestParam(PARAM_HUMAN_REF) String humanRef)
     {
         return marriageMapper.apply(getHuman(humanRef).getMariageRelations());
     }
