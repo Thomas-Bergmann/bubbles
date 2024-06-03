@@ -71,7 +71,7 @@ subprojects {
                 dependency "io.jsonwebtoken:jjwt-jackson:${versionJJWT}"
 
                 dependency "org.liquibase:liquibase-core:4.27.0"
-                dependency 'info.picocli:picocli:4.7.5'
+                dependency 'info.picocli:picocli:4.7.6'
                 dependency "com.microsoft.sqlserver:mssql-jdbc:${versionMicrosoftSqlserverMssqlJdbc}"
 
                 dependency "org.junit.jupiter:junit-jupiter:${versionJupiter}"
