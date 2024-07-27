@@ -17,7 +17,7 @@ updates:
       - "dependencies"
       - "server"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     #  ignore:
       # Ignore all major updates for now until additional version ignores are working
       # Security updates are not affected by this ignore filter and still will be updated
@@ -30,7 +30,7 @@ updates:
     commit-message:
       prefix: "app/dependabot"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     labels:
       - "dependencies"
       - "angular"
