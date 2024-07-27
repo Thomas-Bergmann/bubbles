@@ -37,15 +37,7 @@ updates:
     pull-request-branch-name:
       separator: "/"
     groups:
-      angular:
-        patterns:
-        - "@angular/*"
-        update-types:
-        - "minor"
-        - "patch"
-      ngrx:
-        patterns:
-        - "@ngrx/*"
-        update-types:
-        - "minor"
-        - "patch"
+      dev-deps:
+        dependency-type: "development"
+      prod-deps:
+        dependency-type: "production"
