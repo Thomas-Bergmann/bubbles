@@ -5,4 +5,5 @@
     <include file="classpath:db/bubble/20231219-initial-bubble.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/human/20231220-add-relation.xml" relativeToChangelogFile="false" />
     <include file="classpath:db/20231219-drop-flyway.xml" relativeToChangelogFile="false" />
+    <include file="classpath:db/bubble/20240727-add-bubble-member.xml" relativeToChangelogFile="false" />
 </databaseChangeLog>
