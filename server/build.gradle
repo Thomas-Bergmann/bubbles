@@ -1,6 +1,6 @@
 plugins {
     id 'maven-publish'
-    id "io.spring.dependency-management" version "1.1.5"
+    id "io.spring.dependency-management" version "1.1.6"
 }
 
 allprojects {
@@ -16,22 +16,20 @@ allprojects {
         // maven { url "https://s01.oss.sonatype.org/content/repositories/releases" }
 	}
 
-    jacoco { toolVersion = '0.8.9' }
+    jacoco { toolVersion = '0.8.12' }
 }
 
 def versionMicrosoftSqlserverMssqlJdbc="12.4.2.jre11"
 def versionGlassfishJersey="3.1.7"
-def versionSpringDoc="2.3.0"
-def versionJJWT="0.12.5"
-def versionJupiter="5.10.2"
-def versionJunitPlatform="1.10.2"
+def versionSpringDoc="2.6.0"
+def versionJJWT="0.12.6"
 
 subprojects {
     apply plugin: 'java'
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     // need to exclude to avoid Class path containing multiple SLF4J bindings
@@ -44,14 +42,14 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencies {
         dependencyManagement {
-            imports { mavenBom("org.springframework.boot:spring-boot-dependencies:3.2.4") }
+            imports { mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.2") }
             importedProperties['javax-jaxb.version']
 
             dependencies {
                 dependency "org.springdoc:springdoc-openapi-starter-webmvc-api:${versionSpringDoc}"
                 dependency "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versionSpringDoc}"
 
-                dependency 'com.nimbusds:nimbus-jose-jwt:9.37.3'
+                dependency 'com.nimbusds:nimbus-jose-jwt:9.40'
 
                 dependency "net.logstash.logback:logstash-logback-encoder:7.4"
 
@@ -61,7 +59,7 @@ subprojects {
                 dependency "org.glassfish.jersey.core:jersey-common:${versionGlassfishJersey}"
                 dependency "org.glassfish.jersey.inject:jersey-hk2:${versionGlassfishJersey}"
                 dependency "org.glassfish.jersey.media:jersey-media-json-jackson:${versionGlassfishJersey}"
-                dependency 'org.json:json:20231013'
+                dependency 'org.json:json:20240205'
 
 				dependency 'jakarta.validation:jakarta.validation-api:3.0.2'
                 dependency 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
@@ -70,16 +68,9 @@ subprojects {
                 dependency "io.jsonwebtoken:jjwt-impl:${versionJJWT}"
                 dependency "io.jsonwebtoken:jjwt-jackson:${versionJJWT}"
 
-                dependency "org.liquibase:liquibase-core:4.27.0"
+                dependency "org.liquibase:liquibase-core:4.28.0"
                 dependency 'info.picocli:picocli:4.7.6'
                 dependency "com.microsoft.sqlserver:mssql-jdbc:${versionMicrosoftSqlserverMssqlJdbc}"
-
-                dependency "org.junit.jupiter:junit-jupiter:${versionJupiter}"
-                dependency "org.junit.jupiter:junit-jupiter-api:${versionJupiter}"
-                dependency "org.junit.jupiter:junit-jupiter-engine:${versionJupiter}"
-                dependency "org.junit.jupiter:junit-jupiter-params:${versionJupiter}"
-                dependency "org.junit.platform:junit-platform-engine:${versionJunitPlatform}"
-                dependency "org.junit.platform:junit-platform-commons:${versionJunitPlatform}"
             }
         }
     }
