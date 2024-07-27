@@ -1,7 +1,13 @@
 package de.hatoka.bubbles.bubble.internal.business;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import de.hatoka.bubbles.bubble.capi.business.Membership;
+import de.hatoka.bubbles.bubble.internal.persistence.BubbleHumanDao;
+import de.hatoka.bubbles.bubble.internal.persistence.BubbleHumanPO;
+import de.hatoka.bubbles.human.capi.business.HumanRef;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -20,6 +26,9 @@ public class BubbleBOImpl implements BubbleBO
 {
     @Autowired
     private BubbleDao bubbleDao;
+    @Autowired
+    private BubbleHumanDao bubbleHumanDao;
+
     private final BubbleRef bubbleRef;
 
     public BubbleBOImpl(BubbleRef bubbleRef)
@@ -53,6 +62,7 @@ public class BubbleBOImpl implements BubbleBO
     public void remove()
     {
         BubblePO po = getPO();
+        bubbleHumanDao.deleteAll(bubbleHumanDao.findByBubble(getInternalId()));
         bubbleDao.delete(po);
     }
 
@@ -84,5 +94,47 @@ public class BubbleBOImpl implements BubbleBO
     public UserRef getUserRef()
     {
         return UserRef.globalRef(getPO().getUserRef());
+    }
+
+    @Override
+    public List<Membership> getMembers()
+    {
+        return bubbleHumanDao.findByBubble(getInternalId()).stream().map(this::map).toList();
+    }
+
+    @Override
+    public Membership add(HumanRef humanRef)
+    {
+        return map(findByHumanRef(humanRef).orElseGet(() -> create(humanRef)));
+    }
+
+    private BubbleHumanPO create(HumanRef humanRef)
+    {
+        BubbleHumanPO partOf = new BubbleHumanPO();
+        partOf.setBubbleId(getInternalId());
+        partOf.setHumanRef(humanRef.getGlobalRef());
+        return bubbleHumanDao.save(partOf);
+    }
+
+    @Override
+    public void remove(HumanRef humanRef)
+    {
+        findByHumanRef(humanRef).ifPresent(bubbleHumanDao::delete);
+    }
+
+    @Override
+    public boolean exists(HumanRef humanRef)
+    {
+        return findByHumanRef(humanRef).isPresent();
+    }
+
+    private Optional<BubbleHumanPO> findByHumanRef(HumanRef humanRef)
+    {
+        return bubbleHumanDao.findByBubbleAndHumanRef(getInternalId(), humanRef.getGlobalRef());
+    }
+
+    private Membership map(BubbleHumanPO bubbleHumanPO)
+    {
+        return new PartOfBubbleImpl(bubbleHumanPO, bubbleHumanDao);
     }
 }

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class BubbleDataRO
 {
     @JsonProperty("name")
@@ -13,6 +15,9 @@ public class BubbleDataRO
     @JsonProperty("userRef")
     @NotNull
     private String userRef;
+
+    @JsonProperty("members")
+    private List<BubbleHumanPartRO> humans;
 
     public String getName()
     {
@@ -31,5 +36,15 @@ public class BubbleDataRO
     public void setUserRef(String userRef)
     {
         this.userRef = userRef;
+    }
+
+    public List<BubbleHumanPartRO> getHumans()
+    {
+        return humans;
+    }
+
+    public void setHumans(List<BubbleHumanPartRO> humans)
+    {
+        this.humans = humans;
     }
 }
